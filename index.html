@@ -1,0 +1,127 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title></title>
+    <style>
+        html {
+            overflow: hidden;
+        }
+
+        body {
+            margin: 0;
+            font-size: 26px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            color: #000000;
+            height: 100vh;
+            perspective: 1px;
+            perspective-origin: 0 0;
+            transform-style: preserve-3d;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: url(./m_1.png) 0 0 / cover no-repeat;
+        }
+
+        .parralax-wrapper {
+            width: 100vw;
+            height: 100vh;
+            padding-top: 20vh;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .parralax-child {
+            content: "";
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index: 2;
+        }
+
+        .fog {
+            background: url(./fog_1.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        .mr {
+            background: url(./m_2.png) bottom right / 45% no-repeat;
+            z-index: 1;
+            transition: opacity .2s ease-out;
+        }
+
+        .ml {
+            background: url(./m_3.png) bottom left / 100% no-repeat;
+            z-index: 1;
+            transition: opacity .2s ease-out;
+        }
+
+        .regular-wrapper {
+            width: 100vw;
+            height: 100vh;
+            padding-top: 20vh;
+            z-index: -1;
+            position: relative;
+        }
+
+        .content {
+            margin: 0 auto;
+            padding: 50px;
+            width: 50%;
+            background: transparent;
+        }
+
+        .content h1, .content h3{
+            text-align: center;
+        }
+    </style>
+</head>
+<body id="root">
+    <div class="parralax-wrapper">
+        <div class="parralax-child fog" id="fog"></div>
+        <div class="parralax-child ml" id="ml"></div>
+        <div class="parralax-child mr" id="mr"></div>
+    </div>
+    <div class="regular-wrapper">
+        <div class="content">
+            <h1>Hello!</h1>
+            <h3>It's me!</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quisque sagittis purus sit amet volutpat. Aliquet enim tortor at auctor urna nunc id cursus metus. Suspendisse sed nisi lacus sed viverra. Nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit. Et sollicitudin ac orci phasellus egestas tellus rutrum tellus pellentesque. Semper eget duis at tellus at urna condimentum mattis. Aliquam sem et tortor consequat id porta nibh venenatis. Quis blandit turpis cursus in hac habitasse. Tincidunt dui ut ornare lectus. Mi bibendum neque egestas congue quisque egestas diam in. Diam sit amet nisl suscipit adipiscing bibendum.
+
+                Mi eget mauris pharetra et ultrices. Leo duis ut diam quam nulla porttitor. Cursus metus aliquam eleifend mi. Massa sed elementum tempus egestas sed sed risus pretium. Eget mauris pharetra et ultrices neque. Quam quisque id diam vel quam elementum pulvinar etiam non. Pretium vulputate sapien nec sagittis aliquam malesuada bibendum arcu. Vivamus at augue eget arcu dictum varius duis at consectetur. Ut morbi tincidunt augue interdum velit euismod. Tincidunt vitae semper quis lectus nulla at volutpat diam ut. Sed blandit libero volutpat sed cras ornare arcu dui vivamus. Pellentesque habitant morbi tristique senectus et netus et malesuada. Senectus et netus et malesuada fames ac turpis. Tincidunt arcu non sodales neque. Odio facilisis mauris sit amet. Diam maecenas ultricies mi eget mauris pharetra et ultrices neque. Tristique sollicitudin nibh sit amet commodo nulla facilisi. Euismod in pellentesque massa placerat duis. Purus non enim praesent elementum facilisis leo vel.
+
+                Eu augue ut lectus arcu. In aliquam sem fringilla ut morbi tincidunt augue interdum. Auctor elit sed vulputate mi. Sollicitudin ac orci phasellus egestas tellus rutrum tellus. Sed euismod nisi porta lorem mollis aliquam ut. Lacus suspendisse faucibus interdum posuere. Justo eget magna fermentum iaculis eu non. In est ante in nibh mauris cursus mattis molestie a. Placerat duis ultricies lacus sed turpis tincidunt id aliquet risus. Viverra nam libero justo laoreet sit amet cursus sit amet. Viverra nibh cras pulvinar mattis nunc sed blandit. Justo nec ultrices dui sapien eget mi proin sed. Pharetra vel turpis nunc eget. Tincidunt arcu non sodales neque.
+
+                Cursus euismod quis viverra nibh cras. Phasellus vestibulum lorem sed risus ultricies tristique. Faucibus interdum posuere lorem ipsum dolor sit amet. Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam. Viverra accumsan in nisl nisi. Dignissim convallis aenean et tortor at risus viverra. Vitae justo eget magna fermentum iaculis eu non diam. Diam vel quam elementum pulvinar etiam non quam lacus suspendisse. Integer quis auctor elit sed vulputate mi. Nisl rhoncus mattis rhoncus urna. Ac ut consequat semper viverra nam. Platea dictumst quisque sagittis purus sit amet volutpat consequat mauris. Suspendisse potenti nullam ac tortor vitae purus. Blandit libero volutpat sed cras ornare arcu dui vivamus. At urna condimentum mattis pellentesque id nibh tortor id. Nulla facilisi morbi tempus iaculis urna id volutpat. Praesent semper feugiat nibh sed pulvinar. Diam donec adipiscing tristique risus nec.
+
+                Pretium quam vulputate dignissim suspendisse in est ante in nibh. Enim diam vulputate ut pharetra sit amet aliquam id. A scelerisque purus semper eget duis at tellus at. Et ultrices neque ornare aenean euismod elementum nisi quis eleifend. Ut venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Tincidunt tortor aliquam nulla facilisi cras fermentum. Gravida neque convallis a cras semper auctor. Auctor urna nunc id cursus metus. Volutpat maecenas volutpat blandit aliquam. In iaculis nunc sed augue lacus viverra vitae congue eu. Dui nunc mattis enim ut tellus. Ut morbi tincidunt augue interdum velit euismod in pellentesque massa.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.addEventListener('load', () => {
+            var body = document.getElementById("root");
+            let fog = document.getElementById("fog");
+            let ml = document.getElementById("ml");
+            let mr = document.getElementById("mr");
+            body.addEventListener('scroll', (e) => {
+                let top = document.documentElement.scrollTop || document.body.scrollTop;
+                let opacity = 1 - Math.min(top / window.innerHeight, 1);
+                fog.style.opacity = opacity;
+                let scale = Math.min(6, 1 + 5 * top / window.innerHeight);
+                fog.style.transform = `scale(${scale})`;
+                if (opacity < 1) {
+                    ml.style.opacity = 0;
+                    mr.style.opacity = 0;
+                } else {
+                    ml.style.opacity = opacity;
+                    mr.style.opacity = opacity;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
