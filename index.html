@@ -48,13 +48,13 @@
 
         .mr {
             background: url(./m_2.png) bottom right / 45% no-repeat;
-            z-index: 1;
+            z-index: 3;
             transition: opacity .2s ease-out;
         }
 
         .ml {
             background: url(./m_3.png) bottom left / 100% no-repeat;
-            z-index: 1;
+            z-index: 3;
             transition: opacity .2s ease-out;
         }
 
@@ -109,9 +109,10 @@
                 let top = document.documentElement.scrollTop || document.body.scrollTop;
                 let opacity = 1 - Math.min(top / window.innerHeight, 1);
                 let scale = Math.max(1, Math.min(6, 1 + 5 * top / window.innerHeight));
+                let scaleFog = Math.max(1, Math.min(3, 1 + 2 * top / window.innerHeight));
 
                 fog.style.opacity = opacity;
-                fog.style.transform = `scale(${scale})`;
+                fog.style.transform = `scale(${scaleFog})`;
 
                 ml.style.opacity = opacity;
                 ml.style.transform = `scale(${scale})`;
