@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title></title>
@@ -71,11 +71,9 @@
             padding: 50px;
             width: 50%;
             background: transparent;
-        }
-
-        .content h1, .content h3{
             text-align: center;
         }
+
     </style>
 </head>
 <body id="root">
@@ -110,16 +108,16 @@
             body.addEventListener('scroll', (e) => {
                 let top = document.documentElement.scrollTop || document.body.scrollTop;
                 let opacity = 1 - Math.min(top / window.innerHeight, 1);
-                fog.style.opacity = opacity;
                 let scale = Math.min(6, 1 + 5 * top / window.innerHeight);
+
+                fog.style.opacity = opacity;
                 fog.style.transform = `scale(${scale})`;
-                if (opacity < 1) {
-                    ml.style.opacity = 0;
-                    mr.style.opacity = 0;
-                } else {
-                    ml.style.opacity = opacity;
-                    mr.style.opacity = opacity;
-                }
+
+                ml.style.opacity = opacity;
+                ml.style.transform = `scale(${scale})`;
+
+                mr.style.opacity = opacity;
+                mr.style.transform = `scale(${scale})`;
             });
         });
     </script>
