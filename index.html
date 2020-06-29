@@ -108,7 +108,7 @@
             body.addEventListener('scroll', (e) => {
                 let top = document.documentElement.scrollTop || document.body.scrollTop;
                 let opacity = 1 - Math.min(top / window.innerHeight, 1);
-                let scale = Math.min(6, 1 + 5 * top / window.innerHeight);
+                let scale = Math.max(1, Math.min(6, 1 + 5 * top / window.innerHeight));
 
                 fog.style.opacity = opacity;
                 fog.style.transform = `scale(${scale})`;
