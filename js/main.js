@@ -191,8 +191,9 @@ function update(elapsed) {
 function renderImage(ctx) {
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(innerRotationMomentum);
+
     ctx.beginPath();
+    ctx.rotate(innerRotationMomentum);
     ctx.arc(0, 0, imageWidth / 2, 0, 2 * Math.PI, false);
     ctx.clip();
     ctx.rotate(innerRotationMomentum);
