@@ -41,7 +41,7 @@ window.addEventListener('load', () => {
         window.addEventListener('touchend', handleTouchEnd);
         appLoop();
     };
-    image.src = "../https://github.com/ivan-vorontsov/ivan-vorontsov.github.io/commit/6ccb00f8456235f8ea20b6148eb12f35b8f24f8c#diff-550adfc43f09b004dd414f9714ed014f2759092c6cc163edce8c882b3425559c.jpeg";
+    image.src = "./.jpeg";
 });
 
 function onResize() {
