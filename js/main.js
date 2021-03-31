@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
     image = new Image();
     image.onload = () => {
         canvas = makeCanvas();
-        APP = new App_Singleton(591, 961);
+        APP = new App_Singleton(1280, 1280);
         APP.onresize = onResize;
         onResize();
         for (let i = 0; i < dencity; i++) {
