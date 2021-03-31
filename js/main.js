@@ -9,7 +9,7 @@ function makeCanvas() {
 
 // ------------
 
-let canvas, radius, offset, step = 5, positions = [], A = 55, D, k = 0.001,
+let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertical = [], A = 55, D, k = 0.001,
     omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
     dencity = 400, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
     text = "Ivan Vorontsov - Web Developer / Game Designer", menu, toggleFullscreenButton, adminButton;
@@ -71,12 +71,18 @@ function onResize() {
 function appLoop(elapsed) {
     requestAnimationFrame(appLoop);
 
-    positions = [];
+    positionsHorizontal = [];
+    positionsVertical = [];
 
+    let t = elapsed * 0.001;
     for (let x = 0; x <= canvas.width; x += step) {
-        let t = elapsed * 0.001;
         let y = sineWave(x, t);
-        positions.push([x, y]);
+        positionsHorizontal.push([x, y]);
+    }
+
+    for (let y = 0; y <= canvas.height; y += step) {
+        let x = sineWave(y, t);
+        positionsVertical.push([x, y]);
     }
 
     handleInput();
@@ -89,18 +95,55 @@ function appLoop(elapsed) {
 function render(ctx, t) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 3;
-    ctx.strokeStyle = "blue";
+    ctx.strokeStyle = "black";
     ctx.beginPath();
+
+    //let intersect = 
+
     ctx.moveTo(0, 0);
-    ctx.lineTo(positions[0][0], positions[0][1]);
-    for (let i = 1; i < positions.length; i++) {
-        ctx.lineTo(positions[i][0], positions[i][1]);
+    ctx.lineTo(positionsHorizontal[0][0], positionsHorizontal[0][1]);
+    for (let i = 1; i < Math.floor(positionsHorizontal.length / 2) + 1; i++) {
+        ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
     }
-    ctx.lineTo(canvas.width, 0);
+    for (let i = Math.floor(positionsVertical.length / 2) + 1; i > 0; i--) {
+        ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
+    }
+    ctx.lineTo(positionsVertical[0][0], 0);
     ctx.lineTo(0, 0);
     ctx.stroke();
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "green";
     ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(positionsVertical[0][0], positionsVertical[0][1]);
+    for (let i = 1; i < Math.floor(positionsVertical.length / 2) + 1; i++) {
+        ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
+    }
+    for (let i = Math.floor(positionsHorizontal.length / 2) + 1; i < positionsHorizontal.length; i++) {
+        ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
+    }
+    ctx.lineTo(canvas.width, 0);
+    ctx.lineTo(positionsVertical[0][0], positionsVertical[0][1]);
+    ctx.stroke();
+    ctx.fillStyle = "red";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(positionsHorizontal[positionsVertical.length - 1][0], positionsVertical[positionsVertical.length - 1][1]);
+    for (let i = positionsHorizontal.length - 1; i > Math.floor(positionsHorizontal.length / 2); i--) {
+        ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
+    }
+    for (let i = Math.floor(positionsVertical.length / 2) + 1; i < positionsVertical.length; i++) {
+        ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
+    }
+    
+    ctx.lineTo(canvas.width, canvas.height);
+    ctx.lineTo(positionsHorizontal[positionsHorizontal.length - 1][0], positionsHorizontal[positionsHorizontal.length - 1][1]);
+    ctx.stroke();
+    ctx.fillStyle = "blue";
+    ctx.fill();
+
+
 
     for (let i = 0; i < scales.length; i += 1) {
         let scale = scales[i];
@@ -123,45 +166,8 @@ function render(ctx, t) {
 }
 
 function handleInput() {
-    //menuButton.handleInput();
-
-    /*if (menuButton.clicked) {
-        if (soundBuffer) {
-            let soundNode = actx.createBufferSource();
-            let volumeNode = actx.createGain();
-            let panNode = actx.createStereoPanner();
-
-            soundNode.buffer = soundBuffer;
-
-            soundNode.connect(volumeNode);
-            volumeNode.connect(panNode);
-            panNode.connect(actx.destination);
-
-            volumeNode.gain.value = 0.5;
-            panNode.pan.value = pan;
-            pan *= -1;
-
-            soundNode.start(actx.currentTime);
-        }
-        menu.visible = !menu.visible;
-    }
-    if (adminButton.clicked) {
-        window.location = "/Home/Admin";
-    }
-    menu.handleInput();
-    if (toggleFullscreenButton.clicked) {
-        toggleFullscreeen();
-        menu.visible = false;
-        toggleFullscreenButton.clicked = false;
-    }*/
-
     let mx = mousePosition.x,
         my = mousePosition.y;
-    /*if (menu.visible && mousePressed &&
-        !(mx > menu.x && mx < menu.x + menu.width && my > menu.y && my < menu.y + menu.height) &&
-        !(mx > menuButton.x && mx < menuButton.x + menuButton.width && my > menuButton.y && my < menuButton.y + menuButton.height)) {
-        menu.visible = false;
-    }*/
 }
 
 function update() {
@@ -176,13 +182,6 @@ function update() {
             starPositions[i] = createRandomPosition(canvas);
         }
     }
-    //menuButton.update();
-    /*if (!menu.visible) {
-        menuButton.text = "+";
-    } else {
-        menuButton.text = "-";
-    }
-    menu.update();*/
 }
 
 function renderImage(ctx) {
@@ -205,13 +204,17 @@ function renderImage(ctx) {
 }
 
 function renderText(ctx) {
-    let fontSize = Math.min(canvas.width, canvas.height) / 40 + "px";
+    let fontSize = Math.min(canvas.width, canvas.height) / text.length + "px";
+    
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 8);
     ctx.font = fontSize + " puzzler";
-    let offsetX = ctx.measureText(text).width;
-    ctx.fillStyle = "white";
-    ctx.fillText(text, -offsetX / 2, 0);
+    let len = ctx.measureText(text).width;
+    ctx.fillStyle = "black";
+
+    let maxWidth = Math.min(canvas.width * 3 / 4, len);
+    ctx.fillText(text, - maxWidth / 2, 0, maxWidth); 
+
     ctx.restore();
 }
 
