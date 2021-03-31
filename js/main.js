@@ -41,7 +41,7 @@ window.addEventListener('load', () => {
         window.addEventListener('touchend', handleTouchEnd);
         appLoop();
     };
-    image.src = "./images/IMG_1232.jpg";
+    image.src = "./images/img";
 });
 
 function onResize() {
