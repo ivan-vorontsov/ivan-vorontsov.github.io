@@ -99,7 +99,7 @@ function render(ctx, t) {
     ctx.fillStyle = backgrounds[3];
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 3;
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = "white";
     ctx.beginPath();
 
     ctx.moveTo(0, 0);
