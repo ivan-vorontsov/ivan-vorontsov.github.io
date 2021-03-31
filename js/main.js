@@ -14,7 +14,7 @@ let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertica
     dencity = 400, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
     text = "Ivan Vorontsov - Web Developer / Game Designer", 
     textFooter = "driven by HTML5", menu, toggleFullscreenButton, adminButton,
-    backgrounds = ['#2A99A1', 'red', 'yellow', '#571A99'];
+    backgrounds = ['#2A99A1', 'red', 'yellow', '#571A99'], innerRotationMomentum = 0;
 
 window.addEventListener('load', () => {
     image = new Image();
@@ -172,7 +172,7 @@ function handleInput() {
         my = mousePosition.y;
 }
 
-function update() {
+function update(elapsed) {
     for (let i = 0; i < scales.length; i += 1) {
         if (scales[i] === 0 && Math.random() < 0.01) {
             scales[i] += _scaleStep;
@@ -184,11 +184,13 @@ function update() {
             starPositions[i] = createRandomPosition(canvas);
         }
     }
+    innerRotationMomentum += spRotation * elapsed + innerRotationMomentum;
 }
 
 function renderImage(ctx) {
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(innerRotationMomentum);
     ctx.beginPath();
     ctx.arc(0, 0, imageWidth / 2, 0, 2 * Math.PI, false);
     ctx.clip();
