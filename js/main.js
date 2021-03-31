@@ -9,7 +9,7 @@ function makeCanvas() {
 
 // ------------
 
-let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertical = [], A = 55, D, k = 0.001,
+let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertical = [], A = AInitial = 55, D, k = 0.001,
     omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
     dencity = 400, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
     text = "Ivan Vorontsov - Web Developer / Game Designer", menu, toggleFullscreenButton, adminButton,
@@ -65,8 +65,8 @@ function onResize() {
     radius = Math.max(canvas.width, canvas.height) / 180;
     offset = canvas.width / 16;
     D = canvas.height / 2;
-    A = A * APP.scaleY;
-    imageWidth = canvas.width / 5;
+    A = AInitial * APP.scaleY;
+    imageWidth = canvas.width / 3;
 }
 
 function appLoop(elapsed) {
