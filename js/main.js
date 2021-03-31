@@ -154,9 +154,9 @@ function render(ctx, t) {
         }
         let pos = starPositions[i];
         if (pos.y < sineWave(pos.x, t)) {
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "green";
         } else {
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "green";
         }
         drawStar(pos, scale, ctx);
     }
