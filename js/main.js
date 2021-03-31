@@ -196,7 +196,7 @@ function renderImage(ctx) {
     ctx.rotate(innerRotationMomentum);
     ctx.arc(0, 0, imageWidth / 2, 0, 2 * Math.PI, false);
     ctx.clip();
-    // ctx.rotate(innerRotationMomentum);
+    ctx.rotate(innerRotationMomentum);
     ctx.drawImage(image,
         0,
         0,
