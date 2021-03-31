@@ -185,7 +185,7 @@ function update(elapsed) {
             starPositions[i] = createRandomPosition(canvas);
         }
     }
-    innerRotationMomentum += spRotation * elapsed + innerRotationMomentum;
+    innerRotationMomentum += spRotation * elapsed * 1000 + innerRotationMomentum;
 }
 
 function renderImage(ctx) {
