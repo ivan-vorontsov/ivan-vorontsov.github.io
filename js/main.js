@@ -15,7 +15,7 @@ let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertica
     text = "Ivan Vorontsov - Web Developer / Game Designer", 
     textFooter = "driven by HTML5", menu, toggleFullscreenButton, adminButton,
     backgrounds = ['#2A99A1', 'red', 'yellow', '#571A99'], innerRotationMomentum = 0,
-    spRotation = Math.PI * 2 : 16.7;
+    spRotation = 1;
 
 window.addEventListener('load', () => {
     image = new Image();
