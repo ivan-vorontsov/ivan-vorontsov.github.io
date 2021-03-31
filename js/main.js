@@ -220,8 +220,9 @@ function renderText(ctx) {
     ctx.restore();
 
     ctx.save();
+    fontSize = canvas.width / 5 / 6 / 1.66 + "px";
     ctx.translate(canvas.width / 2, canvas.height- canvas.height / 8);
-    ctx.font = fontSize / 1.66 + " puzzler";
+    ctx.font = fontSize + " puzzler";
     len = ctx.measureText(textFooter).width;
     ctx.fillStyle = "black";
 
