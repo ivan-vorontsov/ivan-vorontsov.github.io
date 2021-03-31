@@ -205,7 +205,7 @@ function renderImage(ctx) {
 }
 
 function renderText(ctx) {
-    let fontSize = Math.min(canvas.width, canvas.height) / text.length + "px";
+    let fontSize = canvas.width / 5 / 6 + "px";
     
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 8);
