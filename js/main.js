@@ -215,7 +215,7 @@ function renderText(ctx) {
     ctx.fillStyle = "white";
 
     let maxWidth = Math.min(canvas.width * 3 / 4, len);
-    ctx.fillText(text, - maxWidth / 2, 0, maxWidth); 
+    // ctx.fillText(text, - maxWidth / 2, 0, maxWidth); 
 
     ctx.restore();
 
@@ -224,7 +224,7 @@ function renderText(ctx) {
     ctx.translate(canvas.width / 2, canvas.height- canvas.height / 8);
     ctx.font = fontSize + " puzzler";
     len = ctx.measureText(textFooter).width;
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "wheat";
 
     maxWidth = Math.min(canvas.width * 3 / 4, len);
     ctx.fillText(textFooter, - maxWidth / 2, 0, maxWidth); 
