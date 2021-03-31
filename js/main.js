@@ -12,7 +12,8 @@ function makeCanvas() {
 let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertical = [], A = 55, D, k = 0.001,
     omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
     dencity = 400, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
-    text = "Ivan Vorontsov - Web Developer / Game Designer", menu, toggleFullscreenButton, adminButton;
+    text = "Ivan Vorontsov - Web Developer / Game Designer", menu, toggleFullscreenButton, adminButton,
+    backgrounds = ['#2A99A1', 'red', 'yellow', '#571A99'];
 
 window.addEventListener('load', () => {
     image = new Image();
@@ -94,11 +95,11 @@ function appLoop(elapsed) {
 
 function render(ctx, t) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = backgrounds[3];
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 3;
     ctx.strokeStyle = "black";
     ctx.beginPath();
-
-    //let intersect = 
 
     ctx.moveTo(0, 0);
     ctx.lineTo(positionsHorizontal[0][0], positionsHorizontal[0][1]);
@@ -111,7 +112,7 @@ function render(ctx, t) {
     ctx.lineTo(positionsVertical[0][0], 0);
     ctx.lineTo(0, 0);
     ctx.stroke();
-    ctx.fillStyle = "green";
+    ctx.fillStyle = backgrounds[0];
     ctx.fill();
 
     ctx.beginPath();
@@ -125,7 +126,7 @@ function render(ctx, t) {
     ctx.lineTo(canvas.width, 0);
     ctx.lineTo(positionsVertical[0][0], positionsVertical[0][1]);
     ctx.stroke();
-    ctx.fillStyle = "red";
+    ctx.fillStyle = backgrounds[1];
     ctx.fill();
 
     ctx.beginPath();
@@ -140,7 +141,7 @@ function render(ctx, t) {
     ctx.lineTo(canvas.width, canvas.height);
     ctx.lineTo(positionsHorizontal[positionsHorizontal.length - 1][0], positionsHorizontal[positionsHorizontal.length - 1][1]);
     ctx.stroke();
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = backgrounds[2];
     ctx.fill();
 
 
@@ -154,7 +155,7 @@ function render(ctx, t) {
         if (pos.y < sineWave(pos.x, t)) {
             ctx.fillStyle = "white";
         } else {
-            ctx.fillStyle = "blue";
+            ctx.fillStyle = "white";
         }
         drawStar(pos, scale, ctx);
     }
