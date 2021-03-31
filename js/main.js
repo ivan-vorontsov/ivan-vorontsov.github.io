@@ -217,6 +217,18 @@ function renderText(ctx) {
     ctx.fillText(text, - maxWidth / 2, 0, maxWidth); 
 
     ctx.restore();
+
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height- canvas.height / 8);
+    ctx.font = fontSize + " puzzler";
+    let len = ctx.measureText(textFooter).width;
+    ctx.fillStyle = "black";
+
+    maxWidth = Math.min(canvas.width * 3 / 4, len);
+    ctx.fillText(textFooter, - maxWidth / 2, 0, maxWidth); 
+
+    ctx.restore();
+
 }
 
 function createRandomPosition(canvas) {
