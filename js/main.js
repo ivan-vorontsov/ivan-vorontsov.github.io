@@ -211,7 +211,7 @@ function update(elapsed) {
     }
 
 
-    innerRotationMomentum = (innerRotationMomentum + spRotation * elapsed / 10000) % (2 * Math.PI);
+    innerRotationMomentum = (innerRotationMomentum + spRotation / 100) % (2 * Math.PI);
 
     console.log(spRotation);
 
@@ -219,10 +219,10 @@ function update(elapsed) {
 }
 
 function updatePhase(elapsed) {
-    let dPhi = (Math.random() * 2 * Math.PI - Math.PI) / 180;
+    let dPhi = (Math.random() * 2 * Math.PI - Math.PI) * Math.PI / 180;
     phiX = ((phiX + phaseStep * elapsed) % (2 * Math.PI)); 
 
-    dPhi = (Math.random() * 2 * Math.PI - Math.PI) / 180;
+    dPhi = (Math.random() * 2 * Math.PI - Math.PI) * Math.PI / 180;
     phiY = ((phiY - phaseStep * elapsed) % (2 * Math.PI));
 }
 
