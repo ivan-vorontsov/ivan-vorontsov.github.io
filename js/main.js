@@ -14,7 +14,7 @@ let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertica
     dencity = 400, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
     text = "Ivan Vorontsov - Web Developer / Game Designer", 
     textFooter = "driven by HTML5", menu, toggleFullscreenButton, adminButton,
-    backgrounds = ['#2A99A1', 'red', 'yellow', '#571A99'], innerRotationMomentum = 0,
+    backgrounds = ['#2A99A1', 'red', 'yellow', '#571A99'], colorText = 'rgb(75, 13, 183)', innerRotationMomentum = 0,
     spRotation = 2 * Math.PI / 1600000, phaseStep = 1 / 240000, turn = false, dPhi = .1, turning = false, previousTime = 0;
 
 window.addEventListener('load', () => {
@@ -276,20 +276,25 @@ function renderText(ctx) {
     fontSize = canvas.width / 5 / 6 / 1.66 + "px";
     
     ctx.font = fontSize + " puzzler";
-    ctx.shadowColor = "red";
+    ctx.shadowColor = colorText;
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0; 
     ctx.shadowBlur = 10;
 
     len = ctx.measureText(textFooter).width;
-    ctx.fillStyle = "black";
+    ctx.fillStyle = 'black';
 
-    ctx.translate(3 * canvas.width / 4 + len / 2, canvas.height - canvas.height / 8);
+    ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate(-Math.PI / 4);
-    ctx.translate(0, -len / 4);
 
-    maxWidth = Math.min(canvas.width * 3 / 4, len);
-    ctx.fillText(textFooter, - maxWidth / 2, 0, maxWidth); 
+    
+    for (let i = 0; i < textFooter.length; i++) {
+        ctx.save();
+        ctx.rotate(-i * Math.PI / 4 / textFooter.length + Math.PI / 8);
+        ctx.translate(0, len * (1 + 6 / 7));
+        ctx.fillText(textFooter[i], 0, 0);
+        ctx.restore();
+    }
 
     ctx.restore();
 
