@@ -9,13 +9,13 @@ function makeCanvas() {
 
 // ------------
 
-let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertical = [], A = AInitial = canvas.width / 3, D, k = 0.001,
-    omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
+let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertical = [], A = AInitial = 0, D, k = 0.001,
+    omega = 1, phi = 1, phiX = Math.PI / 4, phiY = -Math.PI / 4, p = 0.0005, starPositions = [], scales = [],
     dencity = 400, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
     text = "Ivan Vorontsov - Web Developer / Game Designer", 
     textFooter = "driven by HTML5", menu, toggleFullscreenButton, adminButton,
     backgrounds = ['#2A99A1', 'red', 'yellow', '#571A99'], innerRotationMomentum = 0,
-    spRotation = 1;
+    spRotation = 2 * Math.PI / 1600000, phaseStep = 1 / 240000, turn = false, dPhi = .1, turning = false;
 
 window.addEventListener('load', () => {
     image = new Image();
@@ -28,6 +28,7 @@ window.addEventListener('load', () => {
             starPositions.push(createRandomPosition(canvas));
             scales.push(0);
         }
+        A = AInitial = canvas.width / 10;
         /*menuButton = new Button("+", 30, 30, 50, 50, "30px puzzler", "black", "lightgrey", "darkgrey", "white");
         menu = new Menu(15, 81);
         toggleFullscreenButton = new Button("+- Fullscreen", 0, 0, 250, 30, "14px puzzler", "black", "lightgrey", "darkgrey", "white");
@@ -79,18 +80,18 @@ function appLoop(elapsed) {
 
     let t = elapsed * 0.001;
     for (let x = 0; x <= canvas.width; x += step) {
-        let y = sineWave(x, t);
+        let y = sineWave(x, t, phiX);
         positionsHorizontal.push([x, y]);
     }
 
     for (let y = 0; y <= canvas.height; y += step) {
-        let x = sineWave(y, t);
+        let x = sineWave(y, t, phiY);
         positionsVertical.push([x, y]);
     }
 
     handleInput();
 
-    update(elapsed);
+    update(t || 0);
 
     render(canvas.context, elapsed * 0.001);
 }
@@ -154,11 +155,12 @@ function render(ctx, t) {
             scale = _scaleMax * 2 - scales[i];
         }
         let pos = starPositions[i];
-        if (pos.y < sineWave(pos.x, t)) {
+        /*if (pos.y < sineWave(pos.x, t)) {
             ctx.fillStyle = "green";
         } else {
             ctx.fillStyle = "green";
-        }
+        }*/
+        ctx.fillStyle = "green";
         drawStar(pos, scale, ctx);
     }
 
@@ -185,7 +187,43 @@ function update(elapsed) {
             starPositions[i] = createRandomPosition(canvas);
         }
     }
-    innerRotationMomentum += spRotation * elapsed;
+
+    //let dk = Math.random() * 2 * dPhi / 3 - dPhi / 3;
+
+    if (turning) {
+        spRotation += dPhi * elapsed / 100;
+        if (1 - Math.abs(spRotation) < -0.01) {
+            turning = true;
+        } else {
+            turning = false;
+        }
+    } else {
+        spRotation += dPhi * elapsed / 100;
+    }
+
+    
+
+    if (((1 - Math.abs(spRotation)) < 0.01 || (1 - Math.abs(spRotation)) > 0.99) && !turning) {
+        if (1 - Math.abs(spRotation) < 0.01) {
+            dPhi *= -1;
+            turning = true;
+        }
+    }
+
+
+    innerRotationMomentum = (innerRotationMomentum + spRotation * elapsed / 10000) % (2 * Math.PI);
+
+    console.log(spRotation);
+
+    updatePhase(elapsed);
+}
+
+function updatePhase(elapsed) {
+    let dPhi = (Math.random() * 2 * Math.PI - Math.PI) / 180;
+    phiX = ((phiX + phaseStep * elapsed) % (2 * Math.PI)); 
+
+    dPhi = (Math.random() * 2 * Math.PI - Math.PI) / 180;
+    phiY = ((phiY - phaseStep * elapsed) % (2 * Math.PI));
 }
 
 function renderImage(ctx) {
@@ -193,7 +231,6 @@ function renderImage(ctx) {
     ctx.translate(canvas.width / 2, canvas.height / 2);
 
     ctx.beginPath();
-    ctx.rotate(innerRotationMomentum);
     ctx.arc(0, 0, imageWidth / 2, 0, 2 * Math.PI, false);
     ctx.clip();
     ctx.rotate(innerRotationMomentum);
@@ -228,6 +265,11 @@ function renderText(ctx) {
     fontSize = canvas.width / 5 / 6 / 1.66 + "px";
     ctx.translate(canvas.width / 2, canvas.height- canvas.height / 8);
     ctx.font = fontSize + " puzzler";
+    ctx.shadowColor = "red";
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0; 
+    ctx.shadowBlur = 10;
+
     len = ctx.measureText(textFooter).width;
     ctx.fillStyle = "wheat";
 
@@ -259,7 +301,7 @@ function drawStar(pos, scale, ctx) {
 }
 
 
-function sineWave(x, t) {
+function sineWave(x, t, phi) {
     let y = A * Math.sin(k * x - omega * t + phi) + D;
     return y;
 }
