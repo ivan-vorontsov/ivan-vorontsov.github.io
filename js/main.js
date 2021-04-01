@@ -80,6 +80,9 @@ function appLoop(elapsed) {
 
     let t = (elapsed - previousTime) * 0.001;
     previousTime = elapsed;
+    if (t > 0.2) {
+        return;
+    }
     for (let x = 0; x <= canvas.width; x += step) {
         let y = sineWave(x, elapsed, phiX);
         if (Math.random() < 0.01) {
@@ -271,7 +274,7 @@ function renderText(ctx) {
 
     ctx.save();
     fontSize = canvas.width / 5 / 6 / 1.66 + "px";
-    ctx.translate(canvas.width / 2, canvas.height- canvas.height / 8);
+    
     ctx.font = fontSize + " puzzler";
     ctx.shadowColor = "red";
     ctx.shadowOffsetX = 0;
@@ -280,6 +283,9 @@ function renderText(ctx) {
 
     len = ctx.measureText(textFooter).width;
     ctx.fillStyle = "black";
+
+    ctx.translate(3 * canvas.width / 4 + len / 2, canvas.height - canvas.height / 8);
+    ctx.rotate(-Math.PI / 4);
 
     maxWidth = Math.min(canvas.width * 3 / 4, len);
     ctx.fillText(textFooter, - maxWidth / 2, 0, maxWidth); 
