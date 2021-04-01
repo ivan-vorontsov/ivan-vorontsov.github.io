@@ -198,7 +198,7 @@ function update(elapsed) {
 
     if (turning) {
         spRotation += dPhi * elapsed / 100;
-        if (1 - Math.abs(spRotation) < -0.01) {
+        if (1 - Math.abs(spRotation) < 0.01) {
             turning = true;
         } else {
             turning = false;
@@ -209,7 +209,7 @@ function update(elapsed) {
 
     
 
-    if (((1 - Math.abs(spRotation)) < 0.01 || (1 - Math.abs(spRotation)) > 0.99) && !turning) {
+    if (((1 - Math.abs(spRotation)) < 0.01) && !turning) {
         if (1 - Math.abs(spRotation) < 0.01) {
             dPhi *= -1;
             turning = true;
