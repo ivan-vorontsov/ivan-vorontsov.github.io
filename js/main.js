@@ -286,6 +286,7 @@ function renderText(ctx) {
 
     ctx.translate(3 * canvas.width / 4 + len / 2, canvas.height - canvas.height / 8);
     ctx.rotate(-Math.PI / 4);
+    ctx.translate(0, -len / 4);
 
     maxWidth = Math.min(canvas.width * 3 / 4, len);
     ctx.fillText(textFooter, - maxWidth / 2, 0, maxWidth); 
