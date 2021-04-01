@@ -10,12 +10,12 @@ function makeCanvas() {
 // ------------
 
 let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertical = [], A = AInitial = 0, D, k = 0.001,
-    omega = 1, phi = 1, phiX = Math.PI / 4, phiY = -Math.PI / 4, p = 0.0005, starPositions = [], scales = [],
+    omega = 0.001, phi = 1, phiX = Math.PI / 4, phiY = -Math.PI / 4, p = 0.0005, starPositions = [], scales = [],
     dencity = 400, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
     text = "Ivan Vorontsov - Web Developer / Game Designer", 
     textFooter = "driven by HTML5", menu, toggleFullscreenButton, adminButton,
     backgrounds = ['#2A99A1', 'red', 'yellow', '#571A99'], innerRotationMomentum = 0,
-    spRotation = 2 * Math.PI / 1600000, phaseStep = 1 / 240000, turn = false, dPhi = .1, turning = false;
+    spRotation = 2 * Math.PI / 1600000, phaseStep = 1 / 240000, turn = false, dPhi = .1, turning = false, previousTime = 0;
 
 window.addEventListener('load', () => {
     image = new Image();
@@ -78,9 +78,10 @@ function appLoop(elapsed) {
     positionsHorizontal = [];
     positionsVertical = [];
 
-    let t = elapsed * 0.001;
+    let t = (elapsed - previousTime) * 0.001;
+    previousTime = elapsed;
     for (let x = 0; x <= canvas.width; x += step) {
-        let y = sineWave(x, t, phiX);
+        let y = sineWave(x, elapsed, phiX);
         if (Math.random() < 0.01) {
             //y += sineWave(x * x, t, phiX);
         }
@@ -88,7 +89,7 @@ function appLoop(elapsed) {
     }
 
     for (let y = 0; y <= canvas.height; y += step) {
-        let x = sineWave(y, t, phiY);
+        let x = sineWave(y, elapsed, phiY);
         if (Math.random() < 0.01) {
             //x += sineWave(y * y, t, phiY);
         }
@@ -196,15 +197,16 @@ function update(elapsed) {
 
     //let dk = Math.random() * 2 * dPhi / 3 - dPhi / 3;
 
+    let theta = 10 * dPhi * (1 - Math.abs(spRotation));
     if (turning) {
-        spRotation += dPhi * elapsed / 100;
+        spRotation += theta * elapsed;
         if (1 - Math.abs(spRotation) < 0.01) {
             turning = true;
         } else {
             turning = false;
         }
     } else {
-        spRotation += dPhi * elapsed / 100;
+        spRotation += theta * elapsed;
     }
 
     
@@ -217,7 +219,8 @@ function update(elapsed) {
     }
 
 
-    innerRotationMomentum += + 2 * Math.PI * (spRotation / 100) % (2 * Math.PI);
+    innerRotationMomentum += 2 * Math.PI * (spRotation / 100);
+    innerRotationMomentum = innerRotationMomentum % (2 * Math.PI);
 
     console.log(spRotation);
 
