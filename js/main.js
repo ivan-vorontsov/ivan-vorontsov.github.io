@@ -65,7 +65,7 @@ function onResize() {
     }
     canvas.width = APP.width;
     canvas.height = APP.height;
-    radius = Math.max(canvas.width, canvas.height) / 180;
+    radius = Math.max(canvas.width, canvas.height) / 120;
     offset = canvas.width / 16;
     D = canvas.height / 2;
     A = AInitial * APP.scaleY;
@@ -271,7 +271,7 @@ function renderText(ctx) {
     ctx.shadowBlur = 10;
 
     len = ctx.measureText(textFooter).width;
-    ctx.fillStyle = "wheat";
+    ctx.fillStyle = "black";
 
     maxWidth = Math.min(canvas.width * 3 / 4, len);
     ctx.fillText(textFooter, - maxWidth / 2, 0, maxWidth); 
