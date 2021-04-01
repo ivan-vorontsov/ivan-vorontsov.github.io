@@ -81,11 +81,17 @@ function appLoop(elapsed) {
     let t = elapsed * 0.001;
     for (let x = 0; x <= canvas.width; x += step) {
         let y = sineWave(x, t, phiX);
+        if (Math.random() < 0.01) {
+            //y += sineWave(x * x, t, phiX);
+        }
         positionsHorizontal.push([x, y]);
     }
 
     for (let y = 0; y <= canvas.height; y += step) {
         let x = sineWave(y, t, phiY);
+        if (Math.random() < 0.01) {
+            //x += sineWave(y * y, t, phiY);
+        }
         positionsVertical.push([x, y]);
     }
 
@@ -211,7 +217,7 @@ function update(elapsed) {
     }
 
 
-    innerRotationMomentum = (innerRotationMomentum + spRotation / 100) % (2 * Math.PI);
+    innerRotationMomentum += + 2 * Math.PI * (spRotation / 100) % (2 * Math.PI);
 
     console.log(spRotation);
 
@@ -219,11 +225,10 @@ function update(elapsed) {
 }
 
 function updatePhase(elapsed) {
-    let dPhi = (Math.random() * 2 * Math.PI - Math.PI) * Math.PI / 180;
+    let dPhi = (Math.random() * 2 * Math.PI - Math.PI) * Math.PI / 1800;
     phiX = ((phiX + phaseStep * elapsed) % (2 * Math.PI)); 
 
-    dPhi = (Math.random() * 2 * Math.PI - Math.PI) * Math.PI / 180;
-    phiY = ((phiY - phaseStep * elapsed) % (2 * Math.PI));
+    phiY += ((dPhi + phaseStep * elapsed) % (2 * Math.PI));
 }
 
 function renderImage(ctx) {
