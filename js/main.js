@@ -247,6 +247,22 @@ function render(ctx, t) {
     ctx.lineTo(triangle.A.x, triangle.A.y);
     ctx.strokeStyle = "black";
     ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(triangle.B.x, triangle.B.y);
+    ctx.lineTo(midCA.x, midCA.y);
+    ctx.lineTo(triangle.B.x, triangle.B.y);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(triangle.B.x, triangle.B.y);
+    ctx.lineTo(midAB.x, midAB.y);
+    ctx.lineTo(triangle.B.x, triangle.B.y);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+
     //ctx.moveTo(a.x, a.y);
     //func = elliptic(a, b, c);
 
@@ -267,8 +283,8 @@ function render(ctx, t) {
     //}
 
     //menuButton.render(ctx);
-    //renderImage(ctx);
-    //renderText(ctx);
+    renderImage(ctx);
+    renderText(ctx);
     //menu.render(ctx);
 }
 
