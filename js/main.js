@@ -224,6 +224,29 @@ function render(ctx, t) {
     ctx.strokeStyle = "black";
     ctx.stroke();
 
+
+    triangle = {
+        A: { x: 0, y: positionsHorizontal[0][1] },
+        B: { x: canvas.width, y: positionsHorizontal[positionsHorizontal.length - 1][1] },
+        C: { x: positionsVertical[positionsVertical.length - 1][0], y: canvas.height }
+    };
+
+    midAB = { x: (triangle.A.x + triangle.B.x) / 2, y: (triangle.A.y + triangle.B.y) / 2 };
+    medABFunc = function (x) {
+        return (triangle.C.y - midAB.y) * (x - midAB.x) / (triangle.C.x - midAB.x) + midAB.y;
+    }
+
+    midBC = { x: (triangle.B.x + triangle.C.x) / 2, y: (triangle.B.y + triangle.C.y) / 2 };
+
+    midCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
+
+
+    ctx.beginPath();
+    ctx.moveTo(triangle.A.x, triangle.A.y);
+    ctx.lineTo(midBC.x, midBC.y);
+    ctx.lineTo(triangle.A.x, triangle.A.y);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
     //ctx.moveTo(a.x, a.y);
     //func = elliptic(a, b, c);
 
