@@ -29,4 +29,9 @@ function handleTouchStart(evt) {
 
 function handleTouchEnd(evt) {
     mousePressed = false;
+    toggleFullscreeen();
+}
+
+function handleClick(evt) {
+    toggleFullscreeen();
 }

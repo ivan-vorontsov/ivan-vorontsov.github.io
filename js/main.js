@@ -43,6 +43,7 @@ window.addEventListener('load', () => {
         window.addEventListener('mouseup', handleMouseUp);
         window.addEventListener('touchstart', handleTouchStart);
         window.addEventListener('touchend', handleTouchEnd);
+        window.addEventListener('click', handleClick);
         appLoop();
     };
     image.src = "./images/img.jpg";
@@ -93,9 +94,10 @@ function render(ctx, t) {
 
     ctx.moveTo(0, 0);
     ctx.lineTo(0, positionsHorizontal[0][1]);
-    for (let i = 0; i < intersectionPoint.i; i++) {
+    for (let i = 0; i < intersectionPoint.i - 1; i++) {
         ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
     }
+    ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
     for (let i = intersectionPoint.j - 1; i >= 0; i--) {
         ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
     }
@@ -108,9 +110,10 @@ function render(ctx, t) {
 
     ctx.beginPath();
     ctx.moveTo(positionsVertical[0][0], 0);
-    for (let i = 0; i < intersectionPoint.j; i++) {
+    for (let i = 0; i < intersectionPoint.j - 1; i++) {
         ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
     }
+    ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
     for (let i = intersectionPoint.i + 1; i < positionsHorizontal.length; i++) {
         ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
     }
@@ -128,6 +131,10 @@ function render(ctx, t) {
     }
     ctx.lineTo(canvas.width, canvas.height);
     ctx.lineTo(positionsVertical[positionsVertical.length - 1][0], canvas.height);
+
+    for (let i = positionsVertical.length - 1; i > intersectionPoint.j; i--) {
+        ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
+    }
 
     ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
     ctx.stroke();

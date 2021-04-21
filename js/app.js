@@ -45,6 +45,8 @@ function App_Singleton(width, height) {
             appArea.style.marginRight = 0 + 'px';
             appArea.style.marginBottom = margin + 'px';
         }
+        appArea.style.width = this.width + 'px';
+        appArea.style.height = this.height + 'px';
     }
     this.resize = resize;
     resize();
