@@ -7,7 +7,7 @@ function handleMouseMove(evt) {
         offsetLeft = canvasBounds.left,
         offsetTop = canvasBounds.top;
 
-    mousePosition = { x: (evt.clientX - offsetLeft) / APP.scaleX, y: (evt.clientY - offsetTop) / APP.scaleY };
+    mousePosition = { x: (evt.clientX - offsetLeft), y: (evt.clientY - offsetTop) };
 }
 
 function handleMouseDown(evt) {
