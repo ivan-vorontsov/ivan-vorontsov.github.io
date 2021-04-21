@@ -176,18 +176,61 @@ function render(ctx, t) {
     }
     ctx.stroke();
 
-    ctx.beginPath();
+    
     a = { x: positionsVertical[0][0], y: 0 };
     b = { x: canvas.width, y: positionsHorizontal[positionsHorizontal.length - 1][1] }; 
     c = { x: canvas.width / 2 + canvas.width / 8, y: canvas.height / 2 - canvas.height / 8 };
 
-    ctx.moveTo(a.x, a.y);
-    func = elliptic(a, b, c);
+    let triangle = {
+        A: { x: 0, y: positionsHorizontal[0][1]},
+        B: { x: positionsVertical[0][0], y: 0},
+        C: { x: canvas.width, y: positionsHorizontal[positionsHorizontal.length - 1][1]}
+    };
 
-    for (let x = a.x; x < b.x; x += 10) {
-        ctx.lineTo(x, func(x));
+    let midAB = { x: (triangle.A.x + triangle.B.x) / 2, y: (triangle.A.y + triangle.B.y) / 2 };
+    let medABFunc = function (x) {
+        return (triangle.C.y - midAB.y) * (x - midAB.x) / (triangle.C.x - midAB.x) + midAB.y;
     }
+
+    let midBC = { x: (triangle.B.x + triangle.C.x) / 2, y: (triangle.B.y + triangle.C.y) / 2 };
+
+    let midCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
+
+    ctx.beginPath();
+    ctx.moveTo(triangle.C.x, triangle.C.y);
+    ctx.lineTo(midAB.x, midAB.y);
+    ctx.lineTo(triangle.C.x, triangle.C.y);
+    ctx.strokeStyle = "black";
     ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(triangle.A.x, triangle.A.y);
+    ctx.lineTo(midBC.x, midBC.y);
+    ctx.lineTo(triangle.A.x, triangle.A.y);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(triangle.B.x, triangle.B.y);
+    ctx.lineTo(midCA.x, midCA.y);
+    ctx.lineTo(triangle.B.x, triangle.B.y);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(triangle.A.x, triangle.A.y);
+    ctx.lineTo(midCA.x, midCA.y);
+    ctx.lineTo(triangle.A.x, triangle.A.y);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+    //ctx.moveTo(a.x, a.y);
+    //func = elliptic(a, b, c);
+
+    //for (let x = a.x; x < b.x; x += 10) {
+    //    ctx.lineTo(x, func(x));
+    //}
+    //ctx.stroke();
 
 
     //for (let i = 0; i < scales.length; i += 1) {
