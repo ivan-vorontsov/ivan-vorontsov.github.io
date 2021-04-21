@@ -94,13 +94,13 @@ function render(ctx, t) {
 
     ctx.moveTo(0, 0);
     ctx.lineTo(0, positionsHorizontal[0][1]);
-    for (let i = 0; i < intersectionPoint.i - 1; i++) {
-        ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
-    }
-    ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
-    for (let i = intersectionPoint.j - 1; i >= 0; i--) {
-        ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
-    }
+    //for (let i = 0; i < intersectionPoint.i - 1; i++) {
+    //    ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
+    //}
+    //ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
+    //for (let i = intersectionPoint.j - 1; i >= 0; i--) {
+    //    ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
+    //}
     ctx.lineTo(positionsVertical[0][0], 0);
     ctx.lineTo(0, 0);
     ctx.stroke();
@@ -110,53 +110,85 @@ function render(ctx, t) {
 
     ctx.beginPath();
     ctx.moveTo(positionsVertical[0][0], 0);
-    for (let i = 0; i < intersectionPoint.j - 1; i++) {
-        ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
-    }
-    ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
-    for (let i = intersectionPoint.i + 1; i < positionsHorizontal.length; i++) {
-        ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
-    }
+    //for (let i = 0; i < intersectionPoint.j - 1; i++) {
+    //    ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
+    //}
+    //ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
+    //for (let i = intersectionPoint.i + 1; i < positionsHorizontal.length; i++) {
+    //    ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
+    //}
+    ctx.lineTo(canvas.width, positionsHorizontal[positionsHorizontal.length - 1][1]);
     ctx.lineTo(canvas.width, 0);
     ctx.lineTo(positionsVertical[0][0], 0);
+    //ctx.lineTo(positionsVertical[0][0], 0);
     ctx.stroke();
     ctx.fillStyle = backgrounds[1];
     ctx.globalAlpha = backgroudOpacities[1];
     ctx.fill();
 
     ctx.beginPath();
-    ctx.moveTo(intersectionPoint.x, intersectionPoint.y);
-    for (let i = intersectionPoint.i + 1; i < positionsHorizontal.length; i++) {
-        ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
-    }
-    ctx.lineTo(canvas.width, canvas.height);
+    ctx.moveTo(canvas.width, positionsHorizontal[positionsHorizontal.length - 1][1]);
+    //for (let i = intersectionPoint.i + 1; i < positionsHorizontal.length; i++) {
+    //    ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
+    //}
+    //ctx.lineTo(canvas.width, canvas.height);
+    //ctx.lineTo(positionsVertical[positionsVertical.length - 1][0], canvas.height);
+
+    //for (let i = positionsVertical.length - 1; i > intersectionPoint.j; i--) {
+    //    ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
+    //}
+
+    ctx.lineTo(canvas.width, positionsHorizontal[positionsHorizontal.length - 1][1].x);
     ctx.lineTo(positionsVertical[positionsVertical.length - 1][0], canvas.height);
-
-    for (let i = positionsVertical.length - 1; i > intersectionPoint.j; i--) {
-        ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
-    }
-
-    ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
+    ctx.lineTo(canvas.width, canvas.height);
     ctx.stroke();
     ctx.fillStyle = backgrounds[2];
     ctx.globalAlpha = backgroudOpacities[2];
     ctx.fill();
 
     ctx.beginPath();
-    ctx.moveTo(positionsVertical[intersectionPoint.j][0], positionsVertical[intersectionPoint.j][1]);
-    for (let i = intersectionPoint.j; i < positionsVertical.length; i++) {
-        ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
-    }
-    ctx.lineTo(0, canvas.width);
+    ctx.moveTo(positionsVertical[positionsVertical.length - 1][0], canvas.height);
+    //for (let i = intersectionPoint.j; i < positionsVertical.length; i++) {
+    //    ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
+    //}
     ctx.lineTo(0, positionsHorizontal[0][1]);
-    for (let i = 0; i < intersectionPoint.i; i++) {
-        ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
-    }
+    ctx.lineTo(0, canvas.height);
+    ctx.lineTo(positionsVertical[positionsVertical.length - 1][0], canvas.height);
+    //for (let i = 0; i < intersectionPoint.i; i++) {
+    //    ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
+    //}
 
     ctx.stroke();
     ctx.fillStyle = backgrounds[3];
     ctx.globalAlpha = backgroudOpacities[3];
     ctx.fill();
+
+    ctx.beginPath();
+    let a = { x: 0, y: 0 },
+        b = { x: canvas.width, y: canvas.height },
+        c = { x: canvas.width / 8, y: canvas.height / 2 - canvas.height / 8 };
+
+    ctx.moveTo(a.x, a.y);
+    let func = elliptic(a, b, c);
+
+    for (let x = 0; x < canvas.width; x += 10) {
+        ctx.lineTo(x, func(x));
+    }
+    ctx.stroke();
+
+    ctx.beginPath();
+    a = { x: positionsVertical[0][0], y: 0 };
+    b = { x: canvas.width, y: positionsHorizontal[positionsHorizontal.length - 1][1] }; 
+    c = { x: canvas.width / 2 + canvas.width / 8, y: canvas.height / 2 - canvas.height / 8 };
+
+    ctx.moveTo(a.x, a.y);
+    func = elliptic(a, b, c);
+
+    for (let x = a.x; x < b.x; x += 10) {
+        ctx.lineTo(x, func(x));
+    }
+    ctx.stroke();
+
 
     //for (let i = 0; i < scales.length; i += 1) {
     //    let scale = scales[i];
@@ -456,6 +488,16 @@ function drawStar(pos, scale, ctx) {
 function sineWave(x, t, phi) {
     let y = A * Math.sin(k * x - omega * t + phi) + D;
     return y;
+}
+
+function elliptic(A, B, C) {
+    return function (x) {
+        let a = (A.x * (C.y - B.y) + B.x * (A.y - C.y) + C.x * (B.y - A.y)) / ((A.x - B.x) * (A.x - C.x) * (B.x - C.x));
+        let b = (B.y - A.y) / (B.x - A.x) - a * (A.x + B.x);
+        let c = A.y - a * Math.pow(A.x, 2) - b * A.x;
+
+        return a * Math.pow(x, 2) + b * x + c;
+    }
 }
 
 function toggleFullscreeen() {
