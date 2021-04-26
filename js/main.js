@@ -194,7 +194,7 @@ function render(ctx, t) {
 
     let midBC = { x: (triangle.B.x + triangle.C.x) / 2, y: (triangle.B.y + triangle.C.y) / 2 };
 
-    let midCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
+    //let midCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
 
     ctx.beginPath();
     ctx.moveTo(triangle.C.x, triangle.C.y);
@@ -210,19 +210,12 @@ function render(ctx, t) {
     ctx.strokeStyle = "black";
     ctx.stroke();
 
-    ctx.beginPath();
+    /*ctx.beginPath();
     ctx.moveTo(triangle.B.x, triangle.B.y);
     ctx.lineTo(midCA.x, midCA.y);
     ctx.lineTo(triangle.B.x, triangle.B.y);
     ctx.strokeStyle = "black";
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(triangle.A.x, triangle.A.y);
-    ctx.lineTo(midCA.x, midCA.y);
-    ctx.lineTo(triangle.A.x, triangle.A.y);
-    ctx.strokeStyle = "black";
-    ctx.stroke();
+    ctx.stroke();*/
 
 
     triangle = {
@@ -231,24 +224,34 @@ function render(ctx, t) {
         C: { x: positionsVertical[positionsVertical.length - 1][0], y: canvas.height }
     };
 
-    midAB = { x: (triangle.A.x + triangle.B.x) / 2, y: (triangle.A.y + triangle.B.y) / 2 };
-    medABFunc = function (x) {
-        return (triangle.C.y - midAB.y) * (x - midAB.x) / (triangle.C.x - midAB.x) + midAB.y;
-    }
+    let rat1 = Math.sqrt( Math.pow(triangle.A.x - triangle.B.x, 2) + Math.pow(triangle.A.y - triangle.B.y, 2) );
+    let rat2 = Math.sqrt( Math.pow(triangle.A.x - triangle.C.x, 2) + Math.pow(triangle.A.y - triangle.C.y, 2));
+    let lambda = rat1 / rat2;
+    let secBC = { x: (triangle.B.x + lambda * triangle.C.x) / (1 + lambda), y: (triangle.B.y + lambda * triangle.C.y) / (1 + lambda) };
 
-    midBC = { x: (triangle.B.x + triangle.C.x) / 2, y: (triangle.B.y + triangle.C.y) / 2 };
+    rat1 = Math.sqrt( Math.pow(triangle.A.x - triangle.B.x, 2) + Math.pow(triangle.A.y - triangle.B.y, 2) );
+    rat2 = Math.sqrt( Math.pow(triangle.C.x - triangle.B.x, 2) + Math.pow(triangle.B.y - triangle.B.y, 2) );
+    lambda = rat1 / rat2;
+    let secCA = { x: (triangle.A.x + lambda * triangle.C.x) / (1 + lambda), y: (triangle.A.y + lambda * triangle.C.y) / (1 + lambda) };
 
-    midCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
+    //let secCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
 
 
     ctx.beginPath();
     ctx.moveTo(triangle.A.x, triangle.A.y);
-    ctx.lineTo(midBC.x, midBC.y);
+    ctx.lineTo(secBC.x, secBC.y);
     ctx.lineTo(triangle.A.x, triangle.A.y);
     ctx.strokeStyle = "black";
     ctx.stroke();
 
     ctx.beginPath();
+    ctx.moveTo(triangle.B.x, triangle.B.y);
+    ctx.lineTo(secCA.x, secCA.y);
+    ctx.lineTo(triangle.B.x, triangle.B.y);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+    /*ctx.beginPath();
     ctx.moveTo(triangle.B.x, triangle.B.y);
     ctx.lineTo(midCA.x, midCA.y);
     ctx.lineTo(triangle.B.x, triangle.B.y);
@@ -261,7 +264,7 @@ function render(ctx, t) {
     ctx.lineTo(triangle.B.x, triangle.B.y);
     ctx.strokeStyle = "black";
     ctx.stroke();
-
+    */
 
     //ctx.moveTo(a.x, a.y);
     //func = elliptic(a, b, c);
