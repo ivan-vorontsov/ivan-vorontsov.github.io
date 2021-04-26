@@ -214,14 +214,32 @@ function render(ctx, t) {
     ctx.beginPath();
     ctx.moveTo(triangle.B.x, triangle.B.y);
 
+    
+    let leftLine = line(midBC.x, midBC.y, triangle.A.x, triangle.A.y);
+    let rightLine = line(midAB.x, midAB.y, triangle.C.x, triangle.C.y);
     let point = medBHalf(0);
+
     let time = 0;
-    while(time < .77) {
+    while(time < 1) {
         ctx.lineTo(point.x, point.y);
         time += .0167;
         point = medBHalf(time);
+
+        let Ayx = lineY(midBC.x, midBC.y, triangle.A.x, triangle.A.y);
+        let dyA = Ayx(point.x) - point.y;
+        let Axy = lineY(midBC.y, midBC.x, triangle.A.y, triangle.A.x);
+        let dxA = Axy(point.y) - point.x;
+    
+        let Byx = lineY(midAB.x, midAB.y, triangle.C.x, triangle.C.y);
+        let dyB = Byx(point.x) - point.y;
+        let Bxy = lineY(midAB.y, midAB.x, triangle.C.y, triangle.C.x);
+        let dxB = Bxy(point.y) - point.x;
+        if (!(dxA > 0 && dyA > 0 && dxB < 0 && dyB > 0)) {
+            ctx.lineTo(point.x, point.y);
+            break;
+        }
     }
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = "blue";
     ctx.stroke();
 
 
@@ -616,5 +634,11 @@ function line(x0, y0, x1, y1) {
         if(t < 0) t = 0;
         if(t > 1) t = 1;
         return {x: x0 + t * (x1 - x0), y: y0 + t * (y1 - y0) };
+    }
+}
+
+function lineY(x0, y0, x1, y1){
+    return function(x){
+        return y0 + (y1 - y0) * ((x - x0) / (x1 - x0));
     }
 }
