@@ -52,3 +52,7 @@ function App_Singleton(width, height) {
     resize();
     window.addEventListener('resize', resize);
 }
+
+App_Singleton.prototype.getLineWidth = function(){
+    return Math.PI * this.scaleX;
+}
