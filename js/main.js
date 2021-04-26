@@ -194,7 +194,7 @@ function render(ctx, t) {
 
     let midBC = { x: (triangle.B.x + triangle.C.x) / 2, y: (triangle.B.y + triangle.C.y) / 2 };
 
-    //let midCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
+    let midCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
 
     ctx.beginPath();
     ctx.moveTo(triangle.C.x, triangle.C.y);
@@ -209,6 +209,21 @@ function render(ctx, t) {
     ctx.lineTo(triangle.A.x, triangle.A.y);
     ctx.strokeStyle = "black";
     ctx.stroke();
+
+    let medBHalf = line(triangle.B.x, triangle.B.y, midCA.x, midCA.y);
+    ctx.beginPath();
+    ctx.moveTo(triangle.B.x, triangle.B.y);
+
+    let point = medBHalf(0);
+    let time = 0;
+    while(time < .77) {
+        ctx.lineTo(point.x, point.y);
+        time += .0167;
+        point = medBHalf(time);
+    }
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
 
     /*ctx.beginPath();
     ctx.moveTo(triangle.B.x, triangle.B.y);
@@ -592,5 +607,14 @@ function toggleFullscreeen() {
         if (document.exitFullscreen) {
             document.exitFullscreen();
         }
+    }
+}
+
+function line(x0, y0, x1, y1) {
+    
+    return function(t) {
+        if(t < 0) t = 0;
+        if(t > 1) t = 1;
+        return {x: x0 + t * (x1 - x0), y: y0 + t * (y1 - y0) };
     }
 }
