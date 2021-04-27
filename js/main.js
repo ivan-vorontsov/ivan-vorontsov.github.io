@@ -243,18 +243,10 @@ function render(ctx, t) {
     ctx.stroke();
 
 
-    /*ctx.beginPath();
-    ctx.moveTo(triangle.B.x, triangle.B.y);
-    ctx.lineTo(midCA.x, midCA.y);
-    ctx.lineTo(triangle.B.x, triangle.B.y);
-    ctx.strokeStyle = "black";
-    ctx.stroke();*/
-
-
     triangle = {
         A: { x: 0, y: positionsHorizontal[0][1] },
         B: { x: canvas.width, y: positionsHorizontal[positionsHorizontal.length - 1][1] },
-        C: { x: positionsVertical[positionsVertical.length - 1][0], y: canvas.height }
+        C: { x: positionsVertical[positionsVertical.length - 1][0], y: positionsVertical[positionsVertical.length - 1][1] }
     };
 
     let rat1 = Math.sqrt( Math.pow(triangle.A.x - triangle.B.x, 2) + Math.pow(triangle.A.y - triangle.B.y, 2) );
@@ -263,11 +255,44 @@ function render(ctx, t) {
     let secBC = { x: (triangle.B.x + lambda * triangle.C.x) / (1 + lambda), y: (triangle.B.y + lambda * triangle.C.y) / (1 + lambda) };
 
     rat1 = Math.sqrt( Math.pow(triangle.A.x - triangle.B.x, 2) + Math.pow(triangle.A.y - triangle.B.y, 2) );
-    rat2 = Math.sqrt( Math.pow(triangle.C.x - triangle.B.x, 2) + Math.pow(triangle.B.y - triangle.B.y, 2) );
+    rat2 = Math.sqrt( Math.pow(triangle.C.x - triangle.B.x, 2) + Math.pow(triangle.C.y - triangle.B.y, 2) );
     lambda = rat1 / rat2;
     let secCA = { x: (triangle.A.x + lambda * triangle.C.x) / (1 + lambda), y: (triangle.A.y + lambda * triangle.C.y) / (1 + lambda) };
 
-    //let secCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
+    rat1 = Math.sqrt( Math.pow(triangle.A.x - triangle.C.x, 2) + Math.pow(triangle.A.y - triangle.C.y, 2) );
+    rat2 = Math.sqrt( Math.pow(triangle.C.x - triangle.B.x, 2) + Math.pow(triangle.C.y - triangle.B.y, 2) );
+    lambda = rat1 / rat2;
+    let secAB = { x: (triangle.A.x + lambda * triangle.B.x) / (1 + lambda), y: (triangle.A.y + lambda * triangle.B.y) / (1 + lambda) };
+
+    let secABHalf = line(triangle.C.x, triangle.C.y, secAB.x, secAB.y);
+    ctx.beginPath();
+
+    time = 0;
+    point = secABHalf(time);
+    ctx.moveTo(point.x, point.y);  
+    while(time < .67) {
+        let prevPoint = point;
+        time += .00567;
+        point = secABHalf(time);
+
+
+        let Ayx = lineY(secCA.x, secCA.y, triangle.B.x, triangle.B.y);
+        let dyA = Ayx(point.x) - point.y;
+        let Axy = lineY(secCA.y, secCA.x, triangle.B.y, triangle.B.x);
+        let dxA = Axy(point.y) - point.x;
+    
+        let Byx = lineY(secBC.x, secBC.y, triangle.A.x, triangle.A.y);
+        let dyB = Byx(point.x) - point.y;
+        let Bxy = lineY(secBC.y, secBC.x, triangle.A.y, triangle.A.x);
+        let dxB = Bxy(point.y) - point.x;
+ 
+        if ((dxA > 0 && dyA > 0 && dxB < 0 && dyB > 0)) {
+            ctx.lineTo(prevPoint.x, prevPoint.y);
+            break;
+        }
+    }
+    ctx.strokeStyle = "red";
+    ctx.stroke();
 
 
     ctx.beginPath();
@@ -284,39 +309,6 @@ function render(ctx, t) {
     ctx.strokeStyle = "black";
     ctx.stroke();
 
-    /*ctx.beginPath();
-    ctx.moveTo(triangle.B.x, triangle.B.y);
-    ctx.lineTo(midCA.x, midCA.y);
-    ctx.lineTo(triangle.B.x, triangle.B.y);
-    ctx.strokeStyle = "black";
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(triangle.B.x, triangle.B.y);
-    ctx.lineTo(midAB.x, midAB.y);
-    ctx.lineTo(triangle.B.x, triangle.B.y);
-    ctx.strokeStyle = "black";
-    ctx.stroke();
-    */
-
-    //ctx.moveTo(a.x, a.y);
-    //func = elliptic(a, b, c);
-
-    //for (let x = a.x; x < b.x; x += 10) {
-    //    ctx.lineTo(x, func(x));
-    //}
-    //ctx.stroke();
-
-
-    //for (let i = 0; i < scales.length; i += 1) {
-    //    let scale = scales[i];
-    //    if (scales[i] > _scaleMax) {
-    //        scale = _scaleMax * 2 - scales[i];
-    //    }
-    //    let pos = starPositions[i];
-    //    ctx.fillStyle = "green";
-    //    drawStar(pos, scale, ctx);
-    //}
 
     //menuButton.render(ctx);
     renderImage(ctx);
