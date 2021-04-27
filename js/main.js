@@ -18,6 +18,9 @@ let canvas, radius, offset, step = 5, positionsHorizontal = [], positionsVertica
     spRotation = 2 * Math.PI / 1600000, phaseStep = 1 / 240000, turn = false, dPhi = .1, turning = false, previousTime = 0,
     lineA = { A: { x: 0, y: 0 }, B: { x: 0, y: 0 } }, lineB = { A: { x: 0, y: 0 }, B: { x: 0, y: 0 } }, highLightIndex = 0;
 
+
+let T1M, T2M;
+
 window.addEventListener('load', () => {
     image = new Image();
     image.onload = () => {
@@ -221,7 +224,6 @@ function render(ctx, t) {
 
     let time = 0;
     while(time < 1) {
-        ctx.lineTo(point.x, point.y);
         time += .0167;
         point = medBHalf(time);
 
@@ -236,6 +238,7 @@ function render(ctx, t) {
         let dxB = Bxy(point.y) - point.x;
         if (!(dxA > 0 && dyA > 0 && dxB < 0 && dyB > 0)) {
             ctx.lineTo(point.x, point.y);
+            T1M = point;
             break;
         }
     }
@@ -288,6 +291,7 @@ function render(ctx, t) {
  
         if ((dxA > 0 && dyA > 0 && dxB < 0 && dyB > 0)) {
             ctx.lineTo(prevPoint.x, prevPoint.y);
+            T2M = prevPoint;
             break;
         }
     }
@@ -309,9 +313,11 @@ function render(ctx, t) {
     ctx.strokeStyle = "black";
     ctx.stroke();
 
+    renderCloud(ctx);
+
 
     //menuButton.render(ctx);
-    renderImage(ctx);
+    //renderImage(ctx);
     renderText(ctx);
     //menu.render(ctx);
 }
@@ -572,6 +578,71 @@ function renderText(ctx) {
 
     ctx.restore();
 
+}
+
+function renderCloud(ctx){
+    let a = Math.random(),
+        b = Math.random();
+
+    ctx.save();
+    ctx.beginPath();
+
+    let origin = {x: a, y: b};
+    let A = {x: positionsHorizontal[0][0], y: positionsHorizontal[0][1]},
+        B = {x: T1M.x, y: T1M.y},
+        C = {x: positionsHorizontal[positionsHorizontal.length - 1][0], y: positionsHorizontal[positionsHorizontal.length - 1][1]},
+        D = {x: T2M.x, y: T2M.y};
+
+    for(let x = .1; x < 0.9; x += 0.1){
+        for(let y = .1; y < .9; y += 0.1){
+            let AB = {x: A.x + y * (B.x - A.x),y: A.y + y * (B.y - A.y)};
+            let DC = {x: D.x + y * (C.x - D.x),y: D.y + y * (C.y - D.y)};
+            ctx.moveTo(AB.x, AB.y);
+            ctx.lineTo(DC.x, DC.y);
+        }
+        let AD = {x: A.x + x * (D.x - A.x),y: A.y + x * (D.y - A.y)};
+        let BC = {x: B.x + x * (C.x - B.x),y: B.y + x * (C.y - B.y)};
+        ctx.moveTo(AD.x, AD.y);
+        ctx.lineTo(BC.x, BC.y);
+    }
+    ctx.strokeStyle = 'green';
+    ctx.stroke();
+
+    ctx.beginPath();
+    let ULW = {x: positionsVertical[0][0], y: positionsVertical[0][1]};
+    for(let y = 0.1; y < 0.9; y += 0.1) {
+        let AB = {x: A.x + y * (B.x - A.x),y: A.y + y * (B.y - A.y)};
+        let AU = {x: A.x + y * (ULW.x - A.x), y: A.y + y * (ULW.y - A.y)};
+        ctx.moveTo(AB.x, AB.y);
+        ctx.lineTo(AU.x, AU.y);
+        for(let z = 0.1; z < 0.9; z += 0.1){
+            let AB = {x: A.x + z * (ULW.x - A.x),y: A.y + z * (ULW.y - A.y)};
+            let BU = {x: B.x + z * (ULW.x - B.x), y: B.y + z * (ULW.y - B.y)};
+            ctx.moveTo(BU.x, BU.y);
+            ctx.lineTo(AB.x, AB.y);
+        }
+    }
+    ctx.strokeStyle = 'purple';
+    ctx.stroke();
+
+    ctx.beginPath();
+    let URW = {x: positionsVertical[0][0], y: positionsVertical[0][1]};
+    for(let y = 0.9; y > 0.1; y -= 0.1) {
+        let CB = {x: C.x + y * (B.x - C.x),y: C.y + y * (B.y - C.y)};
+        let CU = {x: C.x + y * (URW.x - C.x), y: C.y + y * (URW.y - C.y)};
+        ctx.moveTo(CB.x, CB.y);
+        ctx.lineTo(CU.x, CU.y);
+        for(let z = 0.1; z < 0.9; z += 0.1){
+            let CU = {x: C.x + z * (URW.x - C.x),y: C.y + z * (URW.y - C.y)};
+            let BU = {x: B.x + z * (URW.x - B.x), y: B.y + z * (URW.y - B.y)};
+            ctx.moveTo(BU.x, BU.y);
+            ctx.lineTo(CU.x, CU.y);
+        }
+    }
+    ctx.strokeStyle = 'orange';
+    ctx.stroke();
+
+    ctx.restore();
 }
 
 function createRandomPosition(canvas) {
