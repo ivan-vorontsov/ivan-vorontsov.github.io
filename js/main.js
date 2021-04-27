@@ -166,18 +166,6 @@ function render(ctx, t) {
     ctx.globalAlpha = backgroudOpacities[3];
     ctx.fill();
 
-    ctx.beginPath();
-    let a = { x: 0, y: 0 },
-        b = { x: canvas.width, y: canvas.height },
-        c = { x: canvas.width / 8, y: canvas.height / 2 - canvas.height / 8 };
-
-    ctx.moveTo(a.x, a.y);
-    let func = elliptic(a, b, c);
-
-    for (let x = 0; x < canvas.width; x += 10) {
-        ctx.lineTo(x, func(x));
-    }
-    ctx.stroke();
 
     
     a = { x: positionsVertical[0][0], y: 0 };
@@ -267,13 +255,16 @@ function render(ctx, t) {
     lambda = rat1 / rat2;
     let secAB = { x: (triangle.A.x + lambda * triangle.B.x) / (1 + lambda), y: (triangle.A.y + lambda * triangle.B.y) / (1 + lambda) };
 
+
     let secABHalf = line(triangle.C.x, triangle.C.y, secAB.x, secAB.y);
+    let secBCHalf = line(triangle.A.x, triangle.A.y, secBC.x, secBC.y);
+    let secCAHalf = line(triangle.B.x, triangle.B.y, secCA.x, secCA.y);
     ctx.beginPath();
 
     time = 0;
     point = secABHalf(time);
     ctx.moveTo(point.x, point.y);  
-    while(time < .67) {
+    while(time < 1) {
         let prevPoint = point;
         time += .00567;
         point = secABHalf(time);
@@ -300,16 +291,62 @@ function render(ctx, t) {
 
 
     ctx.beginPath();
-    ctx.moveTo(triangle.A.x, triangle.A.y);
-    ctx.lineTo(secBC.x, secBC.y);
-    ctx.lineTo(triangle.A.x, triangle.A.y);
+
+    time = 0;
+    point = secBCHalf(time);
+    ctx.moveTo(point.x, point.y);
+
+    while(time < 1){
+        let prevPoint = point;
+        time += .00567;
+        point = secBCHalf(time); 
+
+        let Ayx = lineY(triangle.B.x, triangle.B.y, secCA.x, secCA.y);
+        let dyA = Ayx(point.x) - point.y; // > 0
+        let Axy = lineY(triangle.B.y, triangle.B.x, secCA.y, secCA.x);
+        let dxA = Axy(point.y) - point.x; // > 0
+    
+        let Byx = lineY(triangle.C.x, triangle.C.y, secAB.x, secAB.y);
+        let dyB = Byx(point.x) - point.y; // > 0
+        let Bxy = lineY(triangle.C.y, triangle.C.x, secAB.y, secAB.x);
+        let dxB = Bxy(point.y) - point.x; // > 0
+
+        ctx.lineTo(prevPoint.x, prevPoint.y);
+        if ((dxA < 0 && dyA < 0 && dxB < 0)) {
+            break;
+        }
+    }
+
     ctx.strokeStyle = "black";
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(triangle.B.x, triangle.B.y);
-    ctx.lineTo(secCA.x, secCA.y);
-    ctx.lineTo(triangle.B.x, triangle.B.y);
+
+    time = 0;
+    point = secCAHalf(time);
+    ctx.moveTo(point.x, point.y);
+
+    while(time < 1){
+        let prevPoint = point;
+        time += .00567;
+        point = secCAHalf(time);
+
+        let Ayx = lineY(triangle.C.x, triangle.C.y, secAB.x, secAB.y);
+        let dyA = Ayx(point.x) - point.y; // > 0
+        let Axy = lineY(triangle.C.y, triangle.C.x, secAB.y, secAB.x);
+        let dxA = Axy(point.y) - point.x; // > 0
+    
+        let Byx = lineY(triangle.A.x, triangle.A.y, secBC.x, secBC.y);
+        let dyB = Byx(point.x) - point.y; // > 0
+        let Bxy = lineY(triangle.A.y, triangle.A.x, secBC.y, secBC.x);
+        let dxB = Bxy(point.y) - point.x; // > 0
+
+        ctx.lineTo(prevPoint.x, prevPoint.y);
+        if (dxB > 0 && dyB < 0) {
+            break;
+        }
+    }
+
     ctx.strokeStyle = "black";
     ctx.stroke();
 
