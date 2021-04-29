@@ -97,13 +97,7 @@ function render(ctx, t) {
 
     ctx.moveTo(0, 0);
     ctx.lineTo(0, positionsHorizontal[0][1]);
-    //for (let i = 0; i < intersectionPoint.i - 1; i++) {
-    //    ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
-    //}
-    //ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
-    //for (let i = intersectionPoint.j - 1; i >= 0; i--) {
-    //    ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
-    //}
+
     ctx.lineTo(positionsVertical[0][0], 0);
     ctx.lineTo(0, 0);
     ctx.stroke();
@@ -113,17 +107,9 @@ function render(ctx, t) {
 
     ctx.beginPath();
     ctx.moveTo(positionsVertical[0][0], 0);
-    //for (let i = 0; i < intersectionPoint.j - 1; i++) {
-    //    ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
-    //}
-    //ctx.lineTo(intersectionPoint.x, intersectionPoint.y);
-    //for (let i = intersectionPoint.i + 1; i < positionsHorizontal.length; i++) {
-    //    ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
-    //}
     ctx.lineTo(canvas.width, positionsHorizontal[positionsHorizontal.length - 1][1]);
     ctx.lineTo(canvas.width, 0);
     ctx.lineTo(positionsVertical[0][0], 0);
-    //ctx.lineTo(positionsVertical[0][0], 0);
     ctx.stroke();
     ctx.fillStyle = backgrounds[1];
     ctx.globalAlpha = backgroudOpacities[1];
@@ -131,16 +117,6 @@ function render(ctx, t) {
 
     ctx.beginPath();
     ctx.moveTo(canvas.width, positionsHorizontal[positionsHorizontal.length - 1][1]);
-    //for (let i = intersectionPoint.i + 1; i < positionsHorizontal.length; i++) {
-    //    ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
-    //}
-    //ctx.lineTo(canvas.width, canvas.height);
-    //ctx.lineTo(positionsVertical[positionsVertical.length - 1][0], canvas.height);
-
-    //for (let i = positionsVertical.length - 1; i > intersectionPoint.j; i--) {
-    //    ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
-    //}
-
     ctx.lineTo(canvas.width, positionsHorizontal[positionsHorizontal.length - 1][1].x);
     ctx.lineTo(positionsVertical[positionsVertical.length - 1][0], canvas.height);
     ctx.lineTo(canvas.width, canvas.height);
@@ -151,22 +127,13 @@ function render(ctx, t) {
 
     ctx.beginPath();
     ctx.moveTo(positionsVertical[positionsVertical.length - 1][0], canvas.height);
-    //for (let i = intersectionPoint.j; i < positionsVertical.length; i++) {
-    //    ctx.lineTo(positionsVertical[i][0], positionsVertical[i][1]);
-    //}
     ctx.lineTo(0, positionsHorizontal[0][1]);
     ctx.lineTo(0, canvas.height);
     ctx.lineTo(positionsVertical[positionsVertical.length - 1][0], canvas.height);
-    //for (let i = 0; i < intersectionPoint.i; i++) {
-    //    ctx.lineTo(positionsHorizontal[i][0], positionsHorizontal[i][1]);
-    //}
-
     ctx.stroke();
     ctx.fillStyle = backgrounds[3];
     ctx.globalAlpha = backgroudOpacities[3];
     ctx.fill();
-
-
     
     a = { x: positionsVertical[0][0], y: 0 };
     b = { x: canvas.width, y: positionsHorizontal[positionsHorizontal.length - 1][1] }; 
@@ -179,25 +146,52 @@ function render(ctx, t) {
     };
 
     let midAB = { x: (triangle.A.x + triangle.B.x) / 2, y: (triangle.A.y + triangle.B.y) / 2 };
-    let medABFunc = function (x) {
-        return (triangle.C.y - midAB.y) * (x - midAB.x) / (triangle.C.x - midAB.x) + midAB.y;
-    }
 
     let midBC = { x: (triangle.B.x + triangle.C.x) / 2, y: (triangle.B.y + triangle.C.y) / 2 };
 
     let midCA = { x: (triangle.C.x + triangle.A.x) / 2, y: (triangle.C.y + triangle.A.y) / 2 };
 
+    let lineAB = line(triangle.C.x, triangle.C.y, midAB.x, midAB.y);
+    let linearTime = 0;
+    let linearPoint = lineAB(linearTime);
     ctx.beginPath();
-    ctx.moveTo(triangle.C.x, triangle.C.y);
-    ctx.lineTo(midAB.x, midAB.y);
-    ctx.lineTo(triangle.C.x, triangle.C.y);
+    ctx.moveTo(linearPoint.x, linearPoint.y);
+
+    let lineBC = lineY(triangle.A.x, triangle.A.y, midBC.x, midBC.y);
+    let lineBCInv = lineY(triangle.A.y, triangle.A.x, midBC.y, midBC.x);
+    
+    while(linearTime < 1){
+        linearTime += 0.067;
+        linearPoint = lineAB(linearTime);
+        ctx.lineTo(linearPoint.x, linearPoint.y);
+        let dy = lineBC(linearPoint.x) - linearPoint.y;
+        let dx = lineBCInv(linearPoint.y) - linearPoint.x;
+        if (dy > 0 && dx > 0){
+            break;
+        }
+    }
     ctx.strokeStyle = "black";
     ctx.stroke();
 
+    lineBC = line(triangle.A.x, triangle.A.y, midBC.x, midBC.y);
+    linearTime = 0;
+    linearPoint = lineBC(linearTime);
     ctx.beginPath();
-    ctx.moveTo(triangle.A.x, triangle.A.y);
-    ctx.lineTo(midBC.x, midBC.y);
-    ctx.lineTo(triangle.A.x, triangle.A.y);
+    ctx.moveTo(linearPoint.x, linearPoint.y);
+
+    lineAB = lineY(triangle.C.x, triangle.C.y, midAB.x, midAB.y);
+    let lineABInv = lineY(triangle.C.y, triangle.C.x, midAB.y, midAB.x);
+
+    while(linearTime < 1){
+        linearTime += 0.067;
+        linearPoint = lineBC(linearTime);
+        ctx.lineTo(linearPoint.x, linearPoint.y);
+        let dy = lineAB(linearPoint.x) - linearPoint.y;
+        let dx = lineABInv(linearPoint.y) - linearPoint.x;
+        if (dy > 0){
+            break;
+        }
+    }
     ctx.strokeStyle = "black";
     ctx.stroke();
 
@@ -547,18 +541,6 @@ function renderImage(ctx) {
 
 function renderText(ctx) {
     let fontSize = canvas.width / 5 / 6 + "px";
-
-    //ctx.save();
-    //ctx.translate(canvas.width / 2, canvas.height / 8);
-    //ctx.font = fontSize + " puzzler";
-    //let txt = 
-    //let len = ctx.measureText(txt).width;
-    //ctx.fillStyle = "black";
-
-    //let maxWidth = Math.min(canvas.width * 3 / 4, len);
-    //ctx.fillText(txt, - maxWidth / 2, 0, maxWidth);
-
-    //ctx.restore();
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 4);
     ctx.font = fontSize + " puzzler";
@@ -570,7 +552,7 @@ function renderText(ctx) {
     ctx.fillText(txt, - maxWidth / 2, 0, maxWidth);
     ctx.restore();
 
-    let mx = mousePosition.x,
+    /*let mx = mousePosition.x,
         my = mousePosition.y;
     ctx.save();
     ctx.translate(canvas.width / 2, 3 * canvas.height / 4);
@@ -581,7 +563,7 @@ function renderText(ctx) {
 
     maxWidth = Math.min(canvas.width * 3 / 4, len);
     ctx.fillText(txt, - maxWidth / 2, 0, maxWidth);
-    ctx.restore();
+    ctx.restore();*/
 
     ctx.save();
     fontSize = canvas.width / 5 / 6 / 1.66 + "px";
