@@ -87,7 +87,7 @@ function appLoop(elapsed) {
 function render(ctx, t) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 7.7;
     ctx.strokeStyle = "white";
     ctx.beginPath();
 
@@ -163,7 +163,7 @@ function render(ctx, t) {
 
     //menuButton.render(ctx);
     //renderImage(ctx);
-    //renderText(ctx);
+    renderText(ctx);
     //menu.render(ctx);
 }
 
@@ -354,7 +354,8 @@ function renderImage(ctx) {
 }
 
 function renderText(ctx) {
-    let fontSize = canvas.width / 5 / 6 + "px";
+    let fontSize = canvas.width / 5 / 6 + "px",
+        fontSizeHeader = canvas.width / 3 / 4 + "px";
 
     //ctx.save();
     //ctx.translate(canvas.width / 2, canvas.height / 8);
@@ -368,25 +369,48 @@ function renderText(ctx) {
 
     //ctx.restore();
     ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 4);
+    
     ctx.font = fontSize + " puzzler";
-    let txt = "(" + intersectionPoint.x.toFixed(2) + "," + intersectionPoint.y.toFixed(2) + ")";
+    let txt = "(" + Math.PI.toFixed(7) + ")";
+    //"(" + intersectionPoint.x.toFixed(2) + "," + intersectionPoint.y.toFixed(2) + ")";
     let len = ctx.measureText(txt).width;
+    let hei = parseFloat(fontSize);
     ctx.fillStyle = "black";
 
+    ctx.translate(canvas.width / 2, canvas.height / 4 + hei / 2);
     maxWidth = Math.min(canvas.width * 3 / 4, len);
     ctx.fillText(txt, - maxWidth / 2, 0, maxWidth);
     ctx.restore();
 
+    // Magyar
+    /* 
+    ctx.save();
+    
+    ctx.font = fontSizeHeader + " puzzler";
+    txt = "(" + Math.PI.toFixed(7) + "..." + ")";
+    len = ctx.measureText(txt).width;
+    hei = parseFloat(fontSizeHeader);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.83)";
+
+    ctx.translate(canvas.width / 2, canvas.height / 2 + hei / 2);
+
+    maxWidth = Math.min(canvas.width * 3 / 4, len);
+    ctx.fillText(txt, - maxWidth / 2, 0, maxWidth);
+    ctx.restore(); 
+    */
+
     let mx = mousePosition.x,
         my = mousePosition.y;
     ctx.save();
-    ctx.translate(canvas.width / 2, 3 * canvas.height / 4);
+    
     ctx.font = fontSize + " puzzler";
-    txt = "(" + mx + "," + my + ")";
+    txt = "(" + Math.sqrt(2).toFixed(7) + ")";
+    //"(" + mx.toFixed(2) + "," + my.toFixed(2) + ")";
     len = ctx.measureText(txt).width;
+    hei = parseFloat(fontSize);
     ctx.fillStyle = "black";
 
+    ctx.translate(canvas.width / 2, 3 * canvas.height / 4 + hei / 2);
     maxWidth = Math.min(canvas.width * 3 / 4, len);
     ctx.fillText(txt, - maxWidth / 2, 0, maxWidth);
     ctx.restore();
