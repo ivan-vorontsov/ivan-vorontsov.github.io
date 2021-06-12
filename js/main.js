@@ -151,15 +151,15 @@ function render(ctx, t) {
     ctx.globalAlpha = backgroudOpacities[3];
     ctx.fill();
 
-    //for (let i = 0; i < scales.length; i += 1) {
-    //    let scale = scales[i];
-    //    if (scales[i] > _scaleMax) {
-    //        scale = _scaleMax * 2 - scales[i];
-    //    }
-    //    let pos = starPositions[i];
-    //    ctx.fillStyle = "green";
-    //    drawStar(pos, scale, ctx);
-    //}
+    for (let i = 0; i < scales.length; i += 1) {
+        let scale = scales[i];
+        if (scales[i] > _scaleMax) {
+            scale = _scaleMax * 2 - scales[i];
+        }
+        let pos = starPositions[i];
+        ctx.fillStyle = "green";
+        drawStar(pos, scale, ctx);
+    }
 
     //menuButton.render(ctx);
     //renderImage(ctx);
