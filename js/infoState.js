@@ -37,7 +37,7 @@ InfoState.prototype.render = function(ctx) {
     this.drawText(ctx, "email: fiat-tactile.0g@icloud.com", 
         {x: this.m_canvas.width / 2, y : .75 * this.m_canvas.height},
         this.m_canvas.width / 32);
-    this.drawText(ctx, "tel: nincs, azert boldog vagyok.", 
+    this.drawText(ctx, "tel: nincs, azért boldog vagyok.", 
         {x: this.m_canvas.width / 2, y : .8 * this.m_canvas.height},
         this.m_canvas.width / 32);
 
