@@ -20,7 +20,11 @@ Clicker.prototype.reset = function(){
 }
 
 Clicker.prototype.check = function() {
-    return this.m_flag;
+    if (this.m_flag) {
+        this.m_flag = false;
+        return true;
+    }
+    return false;
 }
 
 let pointer = new Clicker();

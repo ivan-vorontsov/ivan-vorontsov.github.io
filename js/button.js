@@ -14,8 +14,7 @@ Button.prototype.handleInput = function() {
             && mousePosition.x < this.m_position.x + this.m_width / 2
             && mousePosition.y > this.m_position.y - this.m_height / 2 
             && mousePosition.y <  this.m_position.y + this.m_height / 2) {
-        pointer.reset();
-        this.m_flag = true;
+            this.m_flag = true;
     }
 }
 

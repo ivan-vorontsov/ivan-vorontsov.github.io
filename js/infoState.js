@@ -17,10 +17,12 @@ InfoState.prototype.update = function(elapsed) {
     if (this.m_button.check()){
         this.m_app.goToIndex();
     }
+    /*
     else if (pointer.check()){
         pointer.reset();
         toggleFullscreeen();
     }
+    */
 
     this.m_fusser.update(elapsed);
 };

@@ -16,41 +16,25 @@ function PlayState(app,canvas) {
     this.beta = new Beta(0, 0, 1 / 3, 2 * Math.PI / 3);
     this.m_button = new ImageChanger(faces);
     this.m_button.setDuration(1);
-    this.m_button.setWidth(this.m_canvas.width / 8);
-    this.m_button.setPosition(14 * this.m_canvas.width / 16, 14 * this.m_canvas.height / 16);
-    this.m_pointer = null;
-    this.m_dbg = null;
-    this.m_dur = 0;
+    this.resize();
 }
 
 PlayState.prototype = Object.create(AppState.prototype);
 
 PlayState.prototype.handleInput = function() {
     this.m_button.handleInput();
-    this.m_pointer = {
-        x: mousePosition.x,
-        y : mousePosition.y,
-        pressed: mousePressed
-    };
 }
 
 PlayState.prototype.update = function(elapsed) {
-    //this.m_app.goToInfo();
-    let flag = this.m_button.check();
-    let flag2 = pointer.check();
-    if (flag) {
+    if (this.m_button.check()) {
         this.m_app.goToInfo();        
     } 
-    else if (flag2) {
+    /*
+    else if (pointer.check()) {
         pointer.reset();
         toggleFullscreeen();
     }
-
-    this.m_dur -= elapsed;
-    if (this.m_dur <= 0 && (flag || flag2)) {
-        this.m_dbg = "B - " + flag + ', P - ' + flag2;
-        this.m_dur = 3;
-    } 
+    */
 
     this.m_button.update(elapsed);
 
@@ -113,24 +97,23 @@ PlayState.prototype.drawTile = function(ctx, idx, alphapoints, alpha0, alphaN, a
     ctx.beginPath();
     ctx.moveTo(alphapoints[alpha0].x, alphapoints[alpha0].y);
 
-    for (let i = alpha0 + alphaStep; i != alphaN; i += alphaStep) {
+    let i;
+
+    for (i = alpha0 + alphaStep; i != alphaN - alphaStep; i += alphaStep) {
         ctx.lineTo(alphapoints[i].x, alphapoints[i].y);
     }
 
-    for (let i = beta0; i != betaN; i += betaStep) {
+    for (i = beta0; i != betaN; i += betaStep) {
         ctx.lineTo(betapoints[i].x, betapoints[i].y);
     }
+    //ctx.lineTo(betapoints[i].x, betapoints[i].y);
 
     ctx.lineTo(cornerx, cornery);
 
     ctx.lineTo(alphapoints[alpha0].x, alphapoints[alpha0].y);
 
     ctx.fillStyle = this.backgrounds[idx];
-    ctx.globalAlpha = this.backgroudOpacities[idx];
     ctx.fill();
-
-    ctx.strokeStyle = this.backgrounds[idx];
-    ctx.stroke();
 }
 
 PlayState.prototype.render = function(ctx) {
@@ -138,39 +121,19 @@ PlayState.prototype.render = function(ctx) {
     let idx = 0;
     
 
-    this.drawTile(ctx, idx, this.alphaCurve.points, 0, this.alphaCurve.side, 1, this.betaCurve.points,
+    this.drawTile(ctx, idx++, this.alphaCurve.points, 0, this.alphaCurve.side, 1, this.betaCurve.points,
         this.betaCurve.side, 0, -1, 0, 0);
 
-    idx++;
-
-    this.drawTile(ctx, idx, this.betaCurve.points, 0, this.betaCurve.side, 1, 
+    this.drawTile(ctx, idx++, this.betaCurve.points, 0, this.betaCurve.side, 1, 
         this.alphaCurve.points, this.alphaCurve.side, this.alphaCurve.points.length, 1, this.m_canvas.width, 0);
 
-    idx++;
-
-    this.drawTile(ctx, idx, this.betaCurve.points, this.betaCurve.points.length - 1, this.betaCurve.side + 1, -1, 
+    this.drawTile(ctx, idx++, this.betaCurve.points, this.betaCurve.points.length - 1, this.betaCurve.side + 1, -1, 
         this.alphaCurve.points, this.alphaCurve.side + 1, this.alphaCurve.points.length, 1, this.m_canvas.width, this.m_canvas.height);
 
-    idx++;
-
-    this.drawTile(ctx, idx, this.betaCurve.points, this.betaCurve.points.length - 1, this.betaCurve.side + 1, -1, 
-        this.alphaCurve.points, this.alphaCurve.side, 0, -1, 0, this.m_canvas.height);
+    this.drawTile(ctx, idx, this.alphaCurve.points, 0, this.alphaCurve.side, 1, 
+        this.betaCurve.points, this.betaCurve.side, this.betaCurve.points.length, 1, 0, this.m_canvas.height);
 
     this.m_button.render(ctx);
-
-    ctx.save();
-    ctx.translate(this.m_canvas.width / 2, .2 * this.m_canvas.height);
-    ctx.fillStyle = "black";
-
-    let txt = this.m_dbg; // "(" + this.m_pointer.x + ", " + this.m_pointer.y + ") - " + (this.m_pointer.pressed ? "down" : "up");
-
-    ctx.font = this.m_canvas.width / 32  + "px toontime";
-    let len = ctx.measureText(txt).width;
-
-    let maxWidth = Math.min(this.m_canvas.width, len);
-    ctx.fillText(txt, - maxWidth / 2, 0, maxWidth);
-
-    ctx.restore();
 }
 
 PlayState.prototype.resize = function() {
@@ -182,6 +145,6 @@ PlayState.prototype.resize = function() {
     this.beta.a = betaA; 
     this.beta.b = betaB;
 
-    this.m_button.setWidth(this.m_canvas.width / 8);
-    this.m_button.setPosition(14 * this.m_canvas.width / 16, 14 * this.m_canvas.height / 16)
+    this.m_button.setWidth(.2 * this.m_canvas.width);
+    this.m_button.setPosition(.8 * this.m_canvas.width, .8 * this.m_canvas.height);
 }
