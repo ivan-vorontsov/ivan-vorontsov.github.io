@@ -19,6 +19,8 @@ function PlayState(app,canvas) {
     this.m_button.setWidth(this.m_canvas.width / 8);
     this.m_button.setPosition(14 * this.m_canvas.width / 16, 14 * this.m_canvas.height / 16);
     this.m_pointer = null;
+    this.m_dbg = null;
+    this.m_dur = 0;
 }
 
 PlayState.prototype = Object.create(AppState.prototype);
@@ -33,13 +35,22 @@ PlayState.prototype.handleInput = function() {
 }
 
 PlayState.prototype.update = function(elapsed) {
-    if (this.m_button.check()) {
+    //this.m_app.goToInfo();
+    let flag = this.m_button.check();
+    let flag2 = pointer.check();
+    if (flag) {
         this.m_app.goToInfo();        
     } 
-    else if (pointer.check()) {
+    else if (flag2) {
         pointer.reset();
         toggleFullscreeen();
     }
+
+    this.m_dur -= elapsed;
+    if (this.m_dur <= 0 && (flag || flag2)) {
+        this.m_dbg = "B - " + flag + ', P - ' + flag2;
+        this.m_dur = 3;
+    } 
 
     this.m_button.update(elapsed);
 
@@ -151,7 +162,7 @@ PlayState.prototype.render = function(ctx) {
     ctx.translate(this.m_canvas.width / 2, .2 * this.m_canvas.height);
     ctx.fillStyle = "black";
 
-    let txt = "(" + this.m_pointer.x + ", " + this.m_pointer.y + ") - " + (this.m_pointer.pressed ? "down" : "up");
+    let txt = this.m_dbg; // "(" + this.m_pointer.x + ", " + this.m_pointer.y + ") - " + (this.m_pointer.pressed ? "down" : "up");
 
     ctx.font = this.m_canvas.width / 32  + "px toontime";
     let len = ctx.measureText(txt).width;
