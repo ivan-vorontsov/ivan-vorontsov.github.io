@@ -29,9 +29,9 @@ function handleTouchStart(evt) {
 
 function handleTouchEnd(evt) {
     mousePressed = false;
-    toggleFullscreeen();
+    //toggleFullscreeen();
 }
 
 function handleClick(evt) {
-    toggleFullscreeen();
+    pointer.set();
 }

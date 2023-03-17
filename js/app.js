@@ -23,13 +23,6 @@ function App_Singleton(width, height) {
         canvas.width = this.width;
         canvas.height = this.height;
 
-        A = AInitial = this.width / 10;
-        
-        radius = Math.max(this.width, this.height) / 120;
-        offset = canvas.width / 16;
-        D = canvas.height / 2;
-        A = AInitial * this.scaleY;
-        imageWidth = this.width / 3;
 
         let appArea = document.querySelector("#appArea");
         if (window.innerWidth > this.width) {
@@ -47,12 +40,46 @@ function App_Singleton(width, height) {
         }
         appArea.style.width = this.width + 'px';
         appArea.style.height = this.height + 'px';
+
+        for (let i= 0; i < this.states.length; i++){
+            this.states[i].resize();
+        }
+        //if (this.currentState != null)
+        //    this.currentState.resize();
     }
     this.resize = resize;
-    resize();
+
     window.addEventListener('resize', resize);
+    this.states = [];
+
+    this.currentState = new PlayState(this, canvas);
+    this.states.push(this.currentState);
+    this.states.push(new InfoState(this, canvas, faces));
+    resize();
+}
+
+App_Singleton.prototype.render = function(ctx) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    this.currentState.render(ctx);
+}
+
+App_Singleton.prototype.handleInput = function() {
+    this.currentState.handleInput();
+}
+
+App_Singleton.prototype.update = function(elapsed) {
+    this.currentState.update(elapsed);
 }
 
 App_Singleton.prototype.getLineWidth = function(){
     return Math.PI * this.scaleX;
+}
+
+App_Singleton.prototype.goToInfo = function() {
+    this.currentState = this.states[1];
+}
+
+App_Singleton.prototype.goToIndex = function() {
+    this.currentState = this.states[0];
 }

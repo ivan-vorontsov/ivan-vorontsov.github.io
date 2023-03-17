@@ -1,94 +1,71 @@
-function Button(text, x = 0, y = 0, width = 60, height = 40, font = "30px puzzler",
-    color = "white", hoverBackground = "darkgrey", pressBackground = "lightgray",
-    normalBackground = "black") {
-    this.text = text;
-    this._x = x;
-    this._y = y;
-    this.width = width;
-    this.height = height;
-    this.hover = false;
-    this.pressed = false;
-    this.clicked = false;
-    this.fillStyle = undefined;
-    this.timer = 0;
-    this.font = font;
-    this.color = color;
-    this.hoverBackground = hoverBackground;
-    this.pressBackground = pressBackground;
-    this.normalBackground = normalBackground;
-    this.parent = null;
+function Button(){
+    this.m_position = null;
+    this.m_width = null;
+    this.m_height = null;
+    this.m_color = "white";
+    this.m_background = "black";
+    this.m_flag = false;
+    this.m_txt = null;
+    this.m_fontSize = null;
+}
+
+Button.prototype.handleInput = function() {
+    if (pointer.check() && mousePosition.x > this.m_position.x - this.m_width / 2 
+            && mousePosition.x < this.m_position.x + this.m_width / 2
+            && mousePosition.y > this.m_position.y - this.m_height / 2 
+            && mousePosition.y <  this.m_position.y + this.m_height / 2) {
+        pointer.reset();
+        this.m_flag = true;
+    }
+}
+
+Button.prototype.update = function(elapsed) {
+
 }
 
 Button.prototype.render = function(ctx) {
     ctx.save();
-    ctx.translate(this._x * APP.scaleX, this._y * APP.scaleY);
-    ctx.fillStyle = this.fillStyle;
-    ctx.fillRect(0, 0, this.width * APP.scaleX, this.height * APP.scaleY);
-    ctx.fillStyle = this.color;
-    let fontSize = parseFloat(this.font.split(' ')[0]);
-    fontSize = fontSize * APP.scaleY;
-    ctx.font = fontSize + "px " + this.font.split(' ')[1];
-    ctx.textBaseline = "top";
-    let dx = 0, dy = 0,
-        textWidth = ctx.measureText(this.text).width,
-        textHeight = ctx.measureText("M").width;
-    dx = this.width * APP.scaleX / 2 - textWidth / 2;
-    dy = this.height * APP.scaleY / 2 - textHeight / 2;
-    ctx.fillText(this.text, dx, dy);
+    ctx.translate(this.m_position.x, this.m_position.y);
+    ctx.fillStyle = this.m_background;
+    ctx.fillRect(-this.m_width / 2, -this.m_height / 2, this.m_width, this.m_height);
+
+    ctx.font = this.m_fontSize  + "px toontime";
+    let len = ctx.measureText(this.m_txt).width;
+    ctx.fillStyle = this.m_color;
+
+    let maxWidth = Math.min(this.m_width, len);
+    ctx.fillText(this.m_txt, - maxWidth / 2, 0, maxWidth);
+
     ctx.restore();
 }
 
-Button.prototype.update = function() {
-    if (this.hover) {
-        this.fillStyle = this.hoverBackground;
-    } else if (this.pressed) {
-        this.fillStyle = this.pressBackground;
-    } else {
-        this.fillStyle = this.normalBackground;
+Button.prototype.check = function() {
+    if (this.m_flag){
+        this.m_flag = false;
+        return true;
     }
+    return false;
 }
 
-Button.prototype.handleInput = function() {
-    this.clicked = false;
-    let mx = mousePosition.x,
-        my = mousePosition.y;
-    if (this.x < mx && this.x + this.width > mx
-        && this.y < my && this.y + this.height > my) {
-        if (!isTouchDevice) {
-            this.hover = true;
-        }
-        if (mousePressed) {
-            this.hover = false;
-            this.pressed = true;
-            if (this.timer === 0) {
-                this.timer = new Date();
-            }
-        } else {
-            if (this.pressed) {
-                let dt = new Date() - this.timer;
-                if (dt < 200) {
-                    this.clicked = true;
-                }
-                this.timer = 0;
-                this.pressed = false;
-            }
-        }
-    } else {
-        this.hover = false;
-        this.pressed = false;
-    }
+Button.prototype.setText = function(text) {
+    this.m_txt = text;
 }
 
-Object.defineProperty(Button.prototype, 'x', {
-    get: function() {
-        if (!this.parent) return this._x;
-        return this.parent.x + this._x;
-    }
-});
+Button.prototype.setWidth = function(x) {
+    this.m_width = x;
+}
 
-Object.defineProperty(Button.prototype, 'y', {
-    get: function() {
-        if (!this.parent) return this._y;
-        return this.parent.y + this._y;
-    }
-});
+Button.prototype.setHeight = function(x) {
+    this.m_height = x;
+}
+
+Button.prototype.setPosition = function(x, y) {
+    this.m_position = {
+        x : x,
+        y : y
+    };
+}
+
+Button.prototype.setFontSize = function(x) {
+    this.m_fontSize = x;
+}
