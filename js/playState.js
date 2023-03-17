@@ -18,12 +18,18 @@ function PlayState(app,canvas) {
     this.m_button.setDuration(1);
     this.m_button.setWidth(this.m_canvas.width / 8);
     this.m_button.setPosition(14 * this.m_canvas.width / 16, 14 * this.m_canvas.height / 16);
+    this.m_pointer = null;
 }
 
 PlayState.prototype = Object.create(AppState.prototype);
 
 PlayState.prototype.handleInput = function() {
     this.m_button.handleInput();
+    this.m_pointer = {
+        x: mousePosition.x,
+        y : mousePosition.y,
+        pressed: mousePressed
+    };
 }
 
 PlayState.prototype.update = function(elapsed) {
@@ -140,6 +146,20 @@ PlayState.prototype.render = function(ctx) {
         this.alphaCurve.points, this.alphaCurve.side, 0, -1, 0, this.m_canvas.height);
 
     this.m_button.render(ctx);
+
+    ctx.save();
+    ctx.translate(this.m_canvas.width / 2, .2 * this.m_canvas.height);
+    ctx.fillStyle = "black";
+
+    let txt = "(" + this.m_pointer.x + ", " + this.m_pointer.y + ") - " + (this.m_pointer.pressed ? "down" : "up");
+
+    ctx.font = this.m_canvas.width / 32  + "px toontime";
+    let len = ctx.measureText(txt).width;
+
+    let maxWidth = Math.min(this.m_canvas.width, len);
+    ctx.fillText(txt, - maxWidth / 2, 0, maxWidth);
+
+    ctx.restore();
 }
 
 PlayState.prototype.resize = function() {
