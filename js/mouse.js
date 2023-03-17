@@ -36,6 +36,7 @@ function handleTouchEnd(evt) {
     if (diff < 200) {
         pointer.set();
     }
+    pointer.set();
 }
 
 function handleClick(evt) {
