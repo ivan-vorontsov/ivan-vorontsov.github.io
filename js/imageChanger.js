@@ -9,20 +9,9 @@ function ImageChanger(images){
     this.m_position = null;
     this.m_width = null;
     this.m_opacity = 1;
-    this.m_flag = false;
 }
 
 ImageChanger.prototype.handleInput = function() {
-    if (POINTER.tapped) {
-        let v = {
-            x: POINTER.x - this.m_position.x,
-            y: POINTER.y - this.m_position.y
-        };
-        if (Math.sqrt(v.x * v.x + v.y * v.y) < this.m_width / 2) {
-            POINTER.tapped = false;
-            this.m_flag = true;
-        }
-    }
 }
 
 ImageChanger.prototype.update = function(elapsed) {
@@ -69,14 +58,6 @@ ImageChanger.prototype.draw = function(ctx, img, opacity) {
 
 ImageChanger.prototype.setPosition = function (x, y) {
     this.m_position = {x : x, y : y};
-}
-
-ImageChanger.prototype.check = function() {
-    if (this.m_flag) {
-        this.m_flag = false;
-        return true;
-    }
-    return false;
 }
 
 ImageChanger.prototype.setWidth = function (x) {

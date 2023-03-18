@@ -1,3 +1,49 @@
+function ImageButton(images) {
+    ImageChanger.call(this, images);
+    this.m_background = 'transparent';
+    this.m_flag = false;
+}
+
+ImageButton.prototype = Object.create(ImageChanger.prototype);
+
+ImageButton.prototype.handleInput = function() {
+    if (POINTER.tapped) {
+        let v = {
+            x: POINTER.x - this.m_position.x,
+            y: POINTER.y - this.m_position.y
+        };
+        if (Math.sqrt(v.x * v.x + v.y * v.y) < .62 * this.m_width) {
+            POINTER.tapped = false;
+            this.m_flag = true;
+        }
+    }
+}
+
+ImageButton.prototype.render = function(ctx) {
+    ctx.save();
+    ctx.translate(this.m_position.x, this.m_position.y);
+
+    ctx.beginPath();
+    ctx.arc(0, 0, .62 * this.m_width, 0, 2 * Math.PI, false);
+    ctx.fillStyle = this.m_background;
+    ctx.fill();
+    ctx.restore();
+
+    ImageChanger.prototype.render.call(this, ctx);
+}
+
+ImageButton.prototype.check = function() {
+    if (this.m_flag) {
+        this.m_flag = false;
+        return true;
+    }
+    return false;
+}
+
+ImageButton.prototype.setBackground = function (color) {
+    this.m_background = color;
+}
+
 function PlayState(app,canvas) {
     AppState.call(this, app, canvas);
     this.backgrounds = ['green', 'red', 'yellow', '#571A99'];
@@ -14,8 +60,9 @@ function PlayState(app,canvas) {
 
     this.alpha = new Alpha(0, 0, 1 / 2, 0);
     this.beta = new Beta(0, 0, 1 / 3, 2 * Math.PI / 3);
-    this.m_button = new ImageChanger(faces);
+    this.m_button = new ImageButton(faces);
     this.m_button.setDuration(1);
+    this.m_button.setBackground('grey');
     this.resize();
 }
 
