@@ -26,15 +26,14 @@ PlayState.prototype.handleInput = function() {
 }
 
 PlayState.prototype.update = function(elapsed) {
+    
     if (this.m_button.check()) {
         this.m_app.goToInfo();        
-    } 
-    /*
-    else if (pointer.check()) {
-        pointer.reset();
-        toggleFullscreeen();
     }
-    */
+    else if (POINTER.tapped) {
+        toggleFullscreeen();
+        POINTER.tapped = false;
+    }
 
     this.m_button.update(elapsed);
 
@@ -122,7 +121,7 @@ PlayState.prototype.render = function(ctx) {
     
 
     this.drawTile(ctx, idx++, this.alphaCurve.points, 0, this.alphaCurve.side, 1, this.betaCurve.points,
-        this.betaCurve.side, 0, -1, 0, 0);
+        this.betaCurve.side, -1, -1, 0, 0);
 
     this.drawTile(ctx, idx++, this.betaCurve.points, 0, this.betaCurve.side, 1, 
         this.alphaCurve.points, this.alphaCurve.side, this.alphaCurve.points.length, 1, this.m_canvas.width, 0);

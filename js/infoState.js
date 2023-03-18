@@ -16,13 +16,10 @@ InfoState.prototype.handleInput = function() {
 InfoState.prototype.update = function(elapsed) {
     if (this.m_button.check()){
         this.m_app.goToIndex();
-    }
-    /*
-    else if (pointer.check()){
-        pointer.reset();
+    } else if (POINTER.tapped){
+        POINTER.tapped = false;
         toggleFullscreeen();
     }
-    */
 
     this.m_fusser.update(elapsed);
 };

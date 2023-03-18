@@ -10,11 +10,12 @@ function Button(){
 }
 
 Button.prototype.handleInput = function() {
-    if (pointer.check() && mousePosition.x > this.m_position.x - this.m_width / 2 
-            && mousePosition.x < this.m_position.x + this.m_width / 2
-            && mousePosition.y > this.m_position.y - this.m_height / 2 
-            && mousePosition.y <  this.m_position.y + this.m_height / 2) {
-            this.m_flag = true;
+    if (POINTER.tapped && POINTER.x > this.m_position.x - this.m_width / 2 
+            && POINTER.x < this.m_position.x + this.m_width / 2
+            && POINTER.y > this.m_position.y - this.m_height / 2 
+            && POINTER.y <  this.m_position.y + this.m_height / 2) {
+                POINTER.tapped = false;
+                this.m_flag = true;
     }
 }
 

@@ -13,13 +13,13 @@ function ImageChanger(images){
 }
 
 ImageChanger.prototype.handleInput = function() {
-    if (pointer.check()) {
+    if (POINTER.tapped) {
         let v = {
-            x: mousePosition.x - this.m_position.x,
-            y: mousePosition.y - this.m_position.y
+            x: POINTER.x - this.m_position.x,
+            y: POINTER.y - this.m_position.y
         };
         if (Math.sqrt(v.x * v.x + v.y * v.y) < this.m_width / 2) {
-            pointer.reset();
+            POINTER.tapped = false;
             this.m_flag = true;
         }
     }

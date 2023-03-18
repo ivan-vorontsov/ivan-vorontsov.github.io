@@ -50,7 +50,7 @@ AppState.prototype.resize = function() {
     throw new Error();
 };
 
-let canvas, APP, t0;
+let canvas, APP, t0, POINTER;
 
 let faces = [];
 
@@ -87,13 +87,9 @@ function imageLoadingLoop() {
         APP = new App_Singleton(1280, 1280);
         
         APP.resize();
-        
-        window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener('mousedown', handleMouseDown);
-        window.addEventListener('mouseup', handleMouseUp);
-        window.addEventListener('touchstart', handleTouchStart);
-        window.addEventListener('touchend', handleTouchEnd);
-        window.addEventListener('click', handleClick);
+
+        POINTER = new Pointer(canvas);
+
         appLoop();
     }
 }
@@ -114,6 +110,7 @@ function appLoop(elapsed) {
 
     APP.render(canvas.context);
 }
+
 
 function toggleFullscreeen() {
     if (!document.fullscreenElement) {
