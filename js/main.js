@@ -113,11 +113,15 @@ function appLoop(elapsed) {
 
 
 function toggleFullscreeen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
+    /*if (!document.fullscreenElement) {
+        if (document.documentElement.requestFullscreen)
+            document.documentElement.requestFullscreen();
+        else 
+            document.documentElement.webkitRequestFullScreen();
     } else {
         if (document.exitFullscreen) {
             document.exitFullscreen();
         }
     }
+    */
 }
