@@ -25,7 +25,7 @@ InfoState.prototype.update = function(elapsed) {
 };
 
 InfoState.prototype.render = function(ctx) {
-    ctx.fillStyle = 'blue';
+    ctx.fillStyle = 'navy';
     ctx.fillRect(0, 0, this.m_canvas.width, this.m_canvas.height);
     this.drawText(ctx, "Ez én vagyok", 
         {x: this.m_canvas.width / 2, y : .15 * this.m_canvas.height}, this.m_canvas.width / 16);
@@ -34,10 +34,10 @@ InfoState.prototype.render = function(ctx) {
         this.m_canvas.width / 16);
 
     this.drawText(ctx, "email: fiat-tactile.0g@icloud.com", 
-        {x: this.m_canvas.width / 2, y : .75 * this.m_canvas.height},
+        {x: this.m_canvas.width / 2, y : .7 * this.m_canvas.height},
         this.m_canvas.width / 32);
     this.drawText(ctx, "tel: nincs, azért boldog vagyok.", 
-        {x: this.m_canvas.width / 2, y : .8 * this.m_canvas.height},
+        {x: this.m_canvas.width / 2, y : .75 * this.m_canvas.height},
         this.m_canvas.width / 32);
 
     this.m_fusser.render(ctx);
@@ -49,7 +49,7 @@ InfoState.prototype.drawText = function(ctx, txt, pos, fontSize) {
     ctx.translate(pos.x, pos.y);
     ctx.font = fontSize + "px toontime";
     let len = ctx.measureText(txt).width;
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "orange";
 
     maxWidth = Math.min(this.m_canvas.width * 3 / 4, len);
     ctx.fillText(txt, - maxWidth / 2, 0, maxWidth);

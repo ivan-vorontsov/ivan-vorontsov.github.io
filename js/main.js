@@ -1,3 +1,5 @@
+//import screenfull from 'screenfull';
+
 function makeCanvas() {
     let canvas = document.createElement("canvas");
     let appArea = document.querySelector("#appArea");
@@ -111,17 +113,34 @@ function appLoop(elapsed) {
     APP.render(canvas.context);
 }
 
-
 function toggleFullscreeen() {
-    /*if (!document.fullscreenElement) {
-        if (document.documentElement.requestFullscreen)
-            document.documentElement.requestFullscreen();
-        else 
-            document.documentElement.webkitRequestFullScreen();
+    if (!document.fullscreenElement) {
+        var docElm = document.documentElement;
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        }
+        else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        }
+        else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        }
+        else if (docElm.msRequestFullscreen) {
+            docElm.msRequestFullscreen();
+        }
     } else {
         if (document.exitFullscreen) {
             document.exitFullscreen();
         }
+        else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        }
+        else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+        }
+        else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+        
     }
-    */
 }
