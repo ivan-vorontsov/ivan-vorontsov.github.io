@@ -12,7 +12,7 @@ ImageButton.prototype.handleInput = function() {
             x: POINTER.x - this.m_position.x,
             y: POINTER.y - this.m_position.y
         };
-        if (Math.sqrt(v.x * v.x + v.y * v.y) < .62 * this.m_width) {
+        if (Math.sqrt(v.x * v.x + v.y * v.y) < .6 * this.m_width) {
             POINTER.tapped = false;
             this.m_flag = true;
         }
@@ -24,7 +24,7 @@ ImageButton.prototype.render = function(ctx) {
     ctx.translate(this.m_position.x, this.m_position.y);
 
     ctx.beginPath();
-    ctx.arc(0, 0, .62 * this.m_width, 0, 2 * Math.PI, false);
+    ctx.arc(0, 0, .55 * this.m_width, 0, 2 * Math.PI, false);
     ctx.fillStyle = this.m_background;
     ctx.fill();
     ctx.restore();
@@ -62,7 +62,7 @@ function PlayState(app,canvas) {
     this.beta = new Beta(0, 0, 1 / 3, 2 * Math.PI / 3);
     this.m_button = new ImageButton(faces);
     this.m_button.setDuration(1);
-    this.m_button.setBackground('grey');
+    this.m_button.setBackground('571A99');
     this.resize();
 }
 
@@ -152,7 +152,6 @@ PlayState.prototype.drawTile = function(ctx, idx, alphapoints, alpha0, alphaN, a
     for (i = beta0; i != betaN; i += betaStep) {
         ctx.lineTo(betapoints[i].x, betapoints[i].y);
     }
-    //ctx.lineTo(betapoints[i].x, betapoints[i].y);
 
     ctx.lineTo(cornerx, cornery);
 
@@ -161,6 +160,27 @@ PlayState.prototype.drawTile = function(ctx, idx, alphapoints, alpha0, alphaN, a
     ctx.fillStyle = this.backgrounds[idx];
     ctx.fill();
 }
+
+PlayState.prototype.drawCurve = function(ctx, points, l, r, step) {
+    ctx.save();
+    ctx.lineWidth = 2 * this.m_app.getLineWidth();
+    ctx.strokeStyle = 'black';
+
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    let skip = false;
+    for(let i = l + 1; i < r; i++) {
+        if (i % step === 0) {
+            skip = !skip;
+        }
+        if (!skip) ctx.lineTo(points[i].x, points[i].y);
+        else ctx.moveTo(points[i].x, points[i].y);
+    }
+
+    ctx.stroke();
+
+    ctx.restore();
+} 
 
 PlayState.prototype.render = function(ctx) {
     ctx.lineWidth = .1 * this.m_app.getLineWidth();
@@ -178,6 +198,9 @@ PlayState.prototype.render = function(ctx) {
 
     this.drawTile(ctx, idx, this.alphaCurve.points, 0, this.alphaCurve.side, 1, 
         this.betaCurve.points, this.betaCurve.side, this.betaCurve.points.length, 1, 0, this.m_canvas.height);
+
+    this.drawCurve(ctx, this.alphaCurve.points, 0, this.alphaCurve.points.length, 10);
+    this.drawCurve(ctx, this.betaCurve.points, 0, this.betaCurve.points.length, 10);
 
     this.m_button.render(ctx);
 }
