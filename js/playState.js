@@ -60,9 +60,9 @@ function PlayState(app,canvas) {
 
     this.alpha = new Alpha(0, 0, 1 / 2, 0);
     this.beta = new Beta(0, 0, 1 / 3, 2 * Math.PI / 3);
-    this.m_button = new ImageButton(faces);
+    this.m_button = new ImageButton([btnImg, btnImg]);
     this.m_button.setDuration(1);
-    this.m_button.setBackground('571A99');
+    //this.m_button.setBackground('571A99');
     this.resize();
 }
 

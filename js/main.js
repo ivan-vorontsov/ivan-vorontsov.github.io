@@ -56,6 +56,8 @@ let canvas, APP, t0, POINTER;
 
 let faces = [];
 
+let btnImg;
+
 
 function loadimage(path) {
     loadimage.imagesLoading++;
@@ -75,6 +77,8 @@ window.addEventListener('load', () => {
     for (let i = 11; i <= 14; i++) {
         faces.push(loadimage('face_' + i + ".jpeg"));
     }
+
+    btnImg =  loadimage('APL.png');
 
     imageLoadingLoop();
 });
