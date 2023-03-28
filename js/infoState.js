@@ -36,10 +36,10 @@ InfoState.prototype.render = function(ctx) {
 
     this.drawText(ctx, "email: fiat-tactile.0g@icloud.com", 
         {x: this.m_canvas.width / 2, y : .7 * this.m_canvas.height},
-        this.m_canvas.width / 16, "md");
-    this.drawText(ctx, "tel: nincs, azért boldog vagyok", 
+        this.m_canvas.width / 14, "md");
+    this.drawText(ctx, "tel: nincs, ezért boldog vagyok", 
         {x: this.m_canvas.width / 2, y : .78 * this.m_canvas.height},
-        this.m_canvas.width / 16, "md");
+        this.m_canvas.width / 14, "md");
 
     this.m_fusser.render(ctx);
     this.m_button.render(ctx);
