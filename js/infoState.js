@@ -63,6 +63,6 @@ InfoState.prototype.resize = function() {
     this.m_button.setFontSize(this.m_canvas.width / 16);
     this.m_button.setPosition(this.m_canvas.width / 2, 7 * this.m_canvas.height / 8);
 
-    this.m_button.setWidth(this.m_canvas.width / 8);
+    this.m_button.setWidth(this.m_canvas.width / 6);
     this.m_button.setHeight(this.m_canvas.width / 15);
 };
