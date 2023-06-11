@@ -3,7 +3,7 @@ function InfoState(app,canvas, images) {
     this.m_fusser = new ImageChanger(images);
     this.m_fusser.setDuration(1 / 2);
     this.m_button = new Button();
-    this.m_button.setText("Szia!");
+    this.m_button.setText("Viszlát!");
     this.resize();
 }
 
