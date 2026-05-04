@@ -46,7 +46,7 @@ ImageButton.prototype.setBackground = function (color) {
 
 function PlayState(app,canvas) {
     AppState.call(this, app, canvas);
-    this.backgrounds = ['green', 'red', 'yellow', '#571A99'];
+    this.backgrounds = ['red', 'green', 'yellow', '#571A99'];
     this.backgroudOpacities = [.8, .8, .8, .8];
     this.alphaCurve = {
         points: [],
